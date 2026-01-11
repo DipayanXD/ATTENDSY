@@ -42,7 +42,7 @@ Follow these steps to get a local copy up and running.
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/ATTENDSY.git
+git clone https://github.com/DipayanXD/ATTENDSY.git
 cd ATTENDSY
 ```
 
