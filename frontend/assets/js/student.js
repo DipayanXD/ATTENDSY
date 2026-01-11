@@ -288,6 +288,7 @@ function loadRecentActivity() {
     });
 }
 
+
 // --- SCANNER LOGIC ---
 
 async function openScanner() {
@@ -341,16 +342,118 @@ function switchManualEntry() {
     if (code) markAttendance(code);
 }
 
-async function markAttendance(code) {
-    // Mock API Call
-    alert("Processing Attendance for Code: " + code);
+// --- ATTENDANCE MARKING LOGIC ---
 
-    // Simulate Success
-    setTimeout(() => {
-        alert("✅ Attendance Marked Successfully!");
-        updateStats({ total: 46, attended: 39, missed: 7, engagement: 89 }); // Optimistic update
-    }, 1000);
+async function markAttendance(code) {
+    if (!code) return;
+    code = code.trim(); // Clean input
+
+    // 1. Show Loading State
+    const originalText = document.querySelector('.nav-item-primary .nav-label').textContent;
+    // document.querySelector('.nav-item-primary .nav-label').textContent = '...'; 
+
+    console.log('[ATTENDANCE] Starting mark for:', code);
+
+    try {
+        // 2. Get Location
+        console.log('[ATTENDANCE] Requesting location...');
+        let location = { latitude: null, longitude: null };
+        try {
+            location = await getLocation(); // Returns {latitude, longitude}
+            console.log('[ATTENDANCE] Location secured:', location);
+        } catch (locErr) {
+            console.warn('[ATTENDANCE] Location failed:', locErr);
+            alert(`⚠️ Location warning: ${locErr.message}. Trying anyway...`);
+            // We proceed even if location fails, backend might block it but we try.
+        }
+
+        // 3. Prepare Payload
+        const payload = {
+            latitude: location.latitude,
+            longitude: location.longitude,
+            device_id: getDeviceId() // from app.js
+        };
+
+        // Determine if code is PIN or Token
+        // PIN is usually 4 digits, Token is hex string
+        if (code.length === 4 && !isNaN(code)) {
+            payload.pin = code;
+        } else {
+            payload.session_token = code;
+        }
+
+        console.log('[ATTENDANCE] Sending payload:', payload);
+
+        // 4. API Call
+        const res = await fetch(`${API_URL}/attendance/mark`, {
+            method: 'POST',
+            headers: getHeaders(),
+            body: JSON.stringify(payload)
+        });
+
+        console.log('[ATTENDANCE] Response status:', res.status);
+
+        const contentType = res.headers.get("content-type");
+        let data;
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+            data = await res.json();
+        } else {
+            const text = await res.text();
+            console.error('[ATTENDANCE] Non-JSON response:', text);
+            throw new Error(`Server returned non-JSON response: ${res.status}`);
+        }
+
+        if (res.ok) {
+            // Success
+            alert(`✅ ${data.message}`);
+            // Optimistic Update or Reload Stats
+            loadStudentData();
+        } else {
+            // Error
+            console.error('[ATTENDANCE] API Error:', data);
+            throw new Error(data.message || 'Failed to mark attendance');
+        }
+
+    } catch (err) {
+        console.error('[ATTENDANCE] Exception:', err);
+        alert(`❌ Error: ${err.message}`);
+    } finally {
+        // Reset IDK
+    }
 }
+
+function getLocation() {
+    return new Promise((resolve, reject) => {
+        if (!navigator.geolocation) {
+            reject(new Error("Geolocation is not supported by your browser"));
+            return;
+        }
+
+        const options = {
+            enableHighAccuracy: true,
+            timeout: 10000, // 10s timeout
+            maximumAge: 0
+        };
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                resolve({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+                });
+            },
+            (error) => {
+                let msg = "Unable to retrieve your location";
+                if (error.code === 1) msg = "Location permission denied. Please allow location access.";
+                else if (error.code === 2) msg = "Location unavailable.";
+                else if (error.code === 3) msg = "Location request timed out.";
+                reject(new Error(msg));
+            },
+            options
+        );
+    });
+}
+
 
 
 // --- CALENDAR LOGIC (Simplified) ---
