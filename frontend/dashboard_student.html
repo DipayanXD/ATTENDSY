@@ -32,31 +32,64 @@
         <!-- ======================= VIEW: HOME ======================= -->
         <div id="view-home" class="view-section active">
 
-            <!-- Quick Stats -->
+            <!-- 1. Quick Stats Row -->
             <div class="stats-grid">
+                <!-- Total Classes -->
                 <div class="stat-card blue">
-                    <div class="stat-icon">📚</div>
+                    <div class="stat-icon-wrapper">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </div>
                     <div>
                         <div class="stat-value" id="val-total">--</div>
                         <div class="stat-label">Total Classes</div>
                     </div>
                 </div>
+
+                <!-- Attendance -->
                 <div class="stat-card green">
-                    <div class="stat-icon">✅</div>
+                    <div class="stat-icon-wrapper">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
                     <div>
                         <div class="stat-value" id="val-attended">--%</div>
                         <div class="stat-label">Attendance</div>
                     </div>
                 </div>
+
+                <!-- Missed -->
                 <div class="stat-card red">
-                    <div class="stat-icon">⚠️</div>
+                    <div class="stat-icon-wrapper">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                    </div>
                     <div>
                         <div class="stat-value" id="val-missed">--</div>
                         <div class="stat-label">Missed</div>
                     </div>
                 </div>
-                <div class="stat-card orange">
-                    <div class="stat-icon">⭐</div>
+
+                <!-- Engagement -->
+                <div class="stat-card gold">
+                    <div class="stat-icon-wrapper">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon
+                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                            </polygon>
+                        </svg>
+                    </div>
                     <div>
                         <div class="stat-value" id="val-score">--</div>
                         <div class="stat-label">Engagement</div>
@@ -64,20 +97,24 @@
                 </div>
             </div>
 
-            <!-- Horizontal Courses Scroll -->
+            <!-- 2. Up Next Banner (New Feature) -->
+            <div id="up-next-container" style="padding: 0 20px; margin-bottom: 24px;">
+                <!-- Injected via JS -->
+            </div>
+
+            <!-- 3. My Courses -->
             <div class="section-header">
                 <h3>My Courses</h3>
-                <span class="text-sm text-muted" onclick="switchView('courses')">View All</span>
+                <span class="text-sm text-accent" onclick="switchView('courses')">View All</span>
             </div>
             <div class="scroll-container" id="home-courses-scroll">
-                <!-- Injected via JS -->
-                <div class="course-card" style="display:flex; align-items:center; justify-content:center;">
+                <div class="course-card">
                     <span class="text-muted">Loading courses...</span>
                 </div>
             </div>
 
-            <!-- Recent Activity List -->
-            <div class="section-header" style="margin-top: 24px;">
+            <!-- 4. Recent Activity -->
+            <div class="section-header" style="margin-top: 28px;">
                 <h3>Recent Activity</h3>
             </div>
             <div style="padding: 0 20px;" id="home-activity-list">
@@ -133,13 +170,13 @@
         <div id="view-profile" class="view-section">
             <div style="padding: 0 20px; text-align: center; margin-top: 20px;">
                 <div
-                    style="width: 100px; height: 100px; background: var(--primary-gradient); border-radius: 50%; margin: 0 auto 16px; display:flex; align-items:center; justify-content:center; color:white; font-size:2.5rem; font-weight:bold box-shadow: var(--shadow-lg);">
+                    style="width: 100px; height: 100px; background: var(--primary-gradient); border-radius: 50%; margin: 0 auto 16px; display:flex; align-items:center; justify-content:center; color:white; font-size:2.5rem; font-weight:bold; box-shadow: var(--shadow-lg);">
                     <span id="profile-initial-lg">S</span>
                 </div>
                 <h2 id="profile-name">Student Name</h2>
                 <p class="text-muted" id="profile-id">ID: 2024001</p>
 
-                <div class="card" style="margin-top: 30px; text-align: left;">
+                <div class="glass-card" style="margin-top: 30px; text-align: left;">
                     <h3 style="margin-bottom: 16px;">Settings</h3>
                     <div style="padding: 12px 0; border-bottom: 1px solid #eee;">Edit Profile</div>
                     <div style="padding: 12px 0; border-bottom: 1px solid #eee;">Notifications</div>
@@ -152,38 +189,44 @@
 
     </main>
 
-    <!-- FAB Scanner Trigger -->
-    <div class="fab-container">
-        <button class="fab" onclick="openScanner()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round">
-                <path d="M3 7V5a2 2 0 0 1 2-2h2"></path>
-                <path d="M17 3h2a2 2 0 0 1 2 2v2"></path>
-                <path d="M21 17v2a2 2 0 0 1-2 2h-2"></path>
-                <path d="M7 21H5a2 2 0 0 1-2-2v-2"></path>
-                <rect x="7" y="7" width="10" height="10" rx="1"></rect>
-            </svg>
-        </button>
-    </div>
-
-    <!-- Bottom Navigation (Glassmorphism) -->
+    <!-- Bottom Navigation (Unified & Flat) -->
     <nav class="bottom-nav">
+        <div class="nav-slider"></div>
         <div class="nav-item active" onclick="switchView('home')" id="nav-home">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                 stroke-linejoin="round">
                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                 <polyline points="9 22 9 12 15 12 15 22"></polyline>
             </svg>
+            <span class="nav-label">Home</span>
         </div>
+
         <div class="nav-item" onclick="switchView('courses')" id="nav-courses">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                 stroke-linejoin="round">
                 <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
                 <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
             </svg>
+            <span class="nav-label">Courses</span>
         </div>
-        <!-- Spacer for FAB -->
-        <div style="width: 60px;"></div>
+
+        <!-- Center Action: Scan -->
+        <div class="nav-item nav-item-primary" onclick="openScanner()">
+            <div class="nav-icon-primary">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                    <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+                    <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+                    <path d="M14 14h7v7h-7z"></path>
+                    <path d="M14 14v7"></path>
+                    <path d="M21 14v7"></path>
+                    <path d="M14 17.5h7"></path>
+                    <path d="M17.5 14v7"></path>
+                </svg>
+            </div>
+            <span class="nav-label">Scan</span>
+        </div>
 
         <div class="nav-item" onclick="switchView('calendar')" id="nav-calendar">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -193,13 +236,16 @@
                 <line x1="8" y1="2" x2="8" y2="6"></line>
                 <line x1="3" y1="10" x2="21" y2="10"></line>
             </svg>
+            <span class="nav-label">Calendar</span>
         </div>
+
         <div class="nav-item" onclick="switchView('notifications')" id="nav-notifications">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                 stroke-linejoin="round">
                 <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                 <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
             </svg>
+            <span class="nav-label">Alerts</span>
         </div>
     </nav>
 

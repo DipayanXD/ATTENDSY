@@ -10,15 +10,39 @@ document.addEventListener('DOMContentLoaded', () => {
     setupNavigation();
     loadNotifications();
 
-    // Simulate initial user (replace with actual auth logic)
-    const name = localStorage.getItem('name') || 'Dipayan';
+    // Simulate initial user
+    const name = localStorage.getItem('name') || 'Aritra Ghosh';
     document.getElementById('user-name-display').textContent = name;
-    document.getElementById('profile-init-lg') ? document.getElementById('profile-init-lg').textContent = name[0] : null;
+
+    // Generate/Load Roll Number: [309427]24{***}
+    let roll = localStorage.getItem('studentRoll');
+    if (!roll) {
+        const random3 = Math.floor(Math.random() * 900) + 100; // 100-999
+        roll = `30942724${random3}`;
+        localStorage.setItem('studentRoll', roll);
+    }
+
+    // Update UI types
+    const profileIdEl = document.getElementById('profile-id');
+    if (profileIdEl) profileIdEl.textContent = `Roll No: ${roll}`;
+
+    // Update Profile Name
+    const profileNameEl = document.getElementById('profile-name');
+    if (profileNameEl) profileNameEl.textContent = name;
+
+    // Update Initials (Header & Profile View)
+    const initial = name.charAt(0).toUpperCase();
+    const headerInitEl = document.getElementById('user-initial');
+    const profileInitEl = document.getElementById('profile-initial-lg');
+
+    if (headerInitEl) headerInitEl.textContent = initial;
+    if (profileInitEl) profileInitEl.textContent = initial;
 });
 
 function setupNavigation() {
-    // Nav handled via onclick="switchView('...')" in HTML
-    // We can add swipe gestures later if needed
+    // Initialize Slider Position
+    const activeItem = document.querySelector('.nav-item.active');
+    if (activeItem) moveNavSlider(activeItem);
 }
 
 function switchView(viewName) {
@@ -35,10 +59,38 @@ function switchView(viewName) {
     // 3. Update Bottom Nav Active State
     document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
     const navItem = document.getElementById(`nav-${viewName}`);
-    if (navItem) navItem.classList.add('active');
+    if (navItem) {
+        navItem.classList.add('active');
+        moveNavSlider(navItem);
+    }
 
     // 4. Scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function moveNavSlider(targetEl) {
+    const slider = document.querySelector('.nav-slider');
+    if (slider && targetEl) {
+        // Calculate relative position to CENTER the slider
+        const nav = document.querySelector('.bottom-nav');
+        const navRect = nav.getBoundingClientRect();
+        const itemRect = targetEl.getBoundingClientRect();
+        const sliderRect = slider.getBoundingClientRect(); // Get current size (fixed by CSS)
+
+        // Center Point of Item relative to Nav
+        const itemCenter = (itemRect.left - navRect.left) + (itemRect.width / 2);
+
+        // Target Left for Slider to be centered
+        // We assume slider width is fixed in CSS (e.g. 60px)
+        // If we can't trust getBoundingClientRect because it's hidden/zero initially, use fixed 64
+        const sliderWidth = 64;
+        const offsetLeft = itemCenter - (sliderWidth / 2);
+
+        slider.style.opacity = '1';
+        // Do NOT change width/height (handled by CSS for perfect circle)
+        slider.style.transform = `translateX(${offsetLeft}px)`;
+        slider.style.left = '0';
+    }
 }
 
 // --- Data Loading ---
@@ -59,6 +111,48 @@ async function loadStudentData() {
 
     // 4. Init Calendar
     renderCalendar(new Date());
+
+    // 5. Load Up Next (New)
+    loadUpNext();
+}
+
+function loadUpNext() {
+    const container = document.getElementById('up-next-container');
+    // Mock Data
+    const nextClass = {
+        code: 'CS201',
+        name: 'Data Structures',
+        time: '10:00 AM',
+        location: 'Room 304, Sci Block',
+        status: 'Starting in 15 mins',
+        isOnline: true
+    };
+
+    container.innerHTML = `
+        <div class="up-next-card">
+            <div class="up-next-header">
+                <span class="time-badge">⚡ ${nextClass.status}</span>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.8"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+            </div>
+            <div class="up-next-content">
+                <div class="text-sm" style="opacity:0.9; font-weight:500;">${nextClass.code}</div>
+                <h3>${nextClass.name}</h3>
+                <div class="up-next-details">
+                     <span style="display:flex; align-items:center; gap:6px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        ${nextClass.time}
+                     </span>
+                     <span style="display:flex; align-items:center; gap:6px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        ${nextClass.location}
+                     </span>
+                </div>
+                <button class="btn-join" onclick="alert('Joining Class Session...')">
+                    Join Live Session
+                </button>
+            </div>
+        </div>
+    `;
 }
 
 function updateStats(stats) {
@@ -91,24 +185,31 @@ async function loadCourses() {
     courses.forEach(c => {
         const card = document.createElement('div');
         card.className = 'course-card';
-        card.style.setProperty('--course-color', c.color);
-        card.style.setProperty('--percent', `${c.progress}%`);
-        card.style.borderLeftColor = c.color;
+        // Dynamic Border Top color
+        card.style.borderTopColor = c.color;
 
         card.innerHTML = `
-            <div class="progress-circle">
-                <div class="progress-value" style="color:${c.color}">${c.progress}%</div>
-            </div>
             <div class="course-header">
-                <div class="course-badge" style="color:${c.color}">${c.dept}</div>
+                <div class="course-badge" style="color:${c.color}; background:${c.color}15;">${c.dept}</div>
                 <div>
-                   <div style="font-weight:800; font-size:1.1rem;">${c.code}</div>
+                   <div style="font-weight:800; font-size:1.1rem; color:var(--text-dark);">${c.code}</div>
                    <div class="text-sm text-muted">${c.name}</div>
                 </div>
             </div>
-            <div style="margin-top:12px; display:flex; justify-content:space-between; align-items:center;">
-                <div class="text-xs text-muted">Next Class</div>
-                <div style="font-weight:600; font-size:0.85rem;">${c.next}</div>
+            
+            <div style="margin-top:20px;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                    <span class="text-xs text-muted font-bold">Attendance</span>
+                    <span class="text-xs font-bold" style="color:${c.color}">${c.progress}%</span>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: ${c.progress}%; background: ${c.color};"></div>
+                </div>
+            </div>
+
+            <div style="margin-top:20px; padding-top:16px; border-top:1px solid #f3f4f6; display:flex; justify-content:space-between; align-items:center;">
+                <div class="text-xs text-muted">Next Class: <span style="color:var(--text-dark); font-weight:600;">${c.next}</span></div>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
             </div>
         `;
         container.appendChild(card);
@@ -119,19 +220,22 @@ async function loadCourses() {
     fullList.innerHTML = '';
     courses.forEach(c => {
         const row = document.createElement('div');
-        row.className = 'card';
+        row.className = 'glass-card'; // Update to use glass card style if available
         row.style.display = 'flex';
         row.style.justifyContent = 'space-between';
         row.style.alignItems = 'center';
+        row.style.marginBottom = '12px';
+        row.style.padding = '16px';
         row.style.borderLeft = `4px solid ${c.color}`;
+        if (!row.classList.contains('glass-card')) row.className = 'card'; // Fallback
 
         row.innerHTML = `
             <div>
                 <h4 style="margin-bottom:4px;">${c.name}</h4>
-                <div class="text-sm text-muted">${c.code} • AttendSy Score: ${c.progress}</div>
+                <div class="text-sm text-muted">${c.code} • ${c.progress}% Attended</div>
             </div>
             <div style="text-align:right;">
-                <button class="btn-icon-circle" style="width:32px; height:32px; color:var(--primary-color); background:#f3f4f6;" onclick="alert('Details for ${c.code}')">➝</button>
+                <button class="btn-icon-circle" style="width:36px; height:36px; color:var(--primary-color); background:#f3f4f6;" onclick="alert('Details for ${c.code}')">➝</button>
             </div>
          `;
         fullList.appendChild(row);
@@ -147,23 +251,38 @@ function loadRecentActivity() {
     ];
 
     list.innerHTML = '';
+
+    // Icon Mapping (SVG)
+    const icons = {
+        '✅': `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`,
+        '❌': `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`,
+        '📝': `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>`
+    };
+
     activities.forEach(a => {
         const item = document.createElement('div');
-        // Simple list styling inline for now
         item.style.display = 'flex';
         item.style.alignItems = 'center';
         item.style.gap = '16px';
-        item.style.padding = '12px 0';
-        item.style.borderBottom = '1px solid #eee';
+        item.style.padding = '16px 0';
+        item.style.borderBottom = '1px solid #f3f4f6';
+
+        const svgIcon = icons[a.icon] || icons['📝'];
+        // Use soft background colors based on type
+        const bg = a.color === 'green' ? '#ecfdf5' : a.color === 'red' ? '#fef2f2' : '#eff6ff';
+        const txtColor = a.color === 'green' ? '#059669' : a.color === 'red' ? '#dc2626' : '#2563eb';
 
         item.innerHTML = `
-            <div style="width:40px; height:40px; background:${a.color === 'green' ? '#d1fae5' : a.color === 'red' ? '#fee2e2' : '#e0f2fe'}; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.2rem;">
-                ${a.icon}
+            <div style="width:48px; height:48px; background:${bg}; color:${txtColor}; border-radius:16px; display:flex; align-items:center; justify-content:center;">
+                ${svgIcon}
             </div>
-            <div>
-                <div style="font-weight:600; font-size:0.95rem;">${a.title}</div>
-                <div class="text-xs text-muted">${a.time}</div>
+            <div style="flex:1;">
+                <div style="font-weight:700; font-size:0.95rem; color:var(--text-dark);">${a.title}</div>
+                <div class="text-xs text-muted" style="margin-top:2px;">${a.time}</div>
             </div>
+            <button style="border:none; background:transparent; color:var(--text-muted); padding:8px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+            </button>
         `;
         list.appendChild(item);
     });

@@ -4,10 +4,16 @@
 */
 
 :root {
-    /* Brand Colors */
-    --primary-gradient: linear-gradient(135deg, #7C3AED 0%, #3B82F6 100%);
-    --primary-color: #7C3AED;
-    --secondary-color: #3B82F6;
+    /* Brand Colors (Crextio/Royal Violet Palette) */
+    --royal-violet: #7b2cbf;
+    --indigo-velvet: #5a189a;
+    --mauve-magic: #c77dff;
+    --accent-gold: #ffb703;
+    /* For Engagement/Star */
+
+    --primary-gradient: linear-gradient(135deg, var(--royal-violet) 0%, var(--indigo-velvet) 100%);
+    --glass-surface: rgba(255, 255, 255, 0.9);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.5);
 
     /* Status Colors */
     --success-color: #10B981;
@@ -15,23 +21,26 @@
     --danger-color: #EF4444;
     --text-dark: #1F2937;
     --text-muted: #6B7280;
+    --text-accent: var(--royal-violet);
 
     /* Backgrounds */
-    --bg-body: #F9FAFB;
+    --bg-body: #F3F4F6;
+    /* Slightly darker to make white cards pop */
     --bg-card: #FFFFFF;
 
     /* Shadows */
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --shadow-fab: 0 8px 20px rgba(124, 58, 237, 0.4);
+    --shadow-glow: 0 0 20px rgba(123, 44, 191, 0.15);
 
     /* Layout */
     --radius-lg: 20px;
     --radius-md: 16px;
     --header-height: 70px;
-    --nav-height: 76px;
-    --fab-size: 64px;
+    --nav-height: 80px;
+    /* Taller for labels */
+    --fab-size: 60px;
 }
 
 * {
@@ -45,8 +54,8 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background-color: var(--bg-body);
     color: var(--text-dark);
-    padding-bottom: calc(var(--nav-height) + 20px);
-    /* Space for bottom nav */
+    padding-bottom: calc(var(--nav-height) + 40px);
+    /* Increased space for bottom scrolling */
 }
 
 /* --- Typography --- */
@@ -133,60 +142,150 @@ header {
 
 .stat-card {
     background: white;
-    padding: 16px;
+    padding: 20px 16px;
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 110px;
+    height: 130px;
+    /* Taller */
     position: relative;
     overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s;
 }
 
-.stat-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 10px;
+.stat-card:active {
+    transform: scale(0.98);
+}
+
+.stat-icon-wrapper {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 12px;
-    font-size: 1.1rem;
 }
 
 .stat-value {
-    font-size: 1.5rem;
+    font-size: 2rem;
+    /* Larger */
     font-weight: 800;
     line-height: 1;
     margin-bottom: 4px;
+    color: var(--text-dark);
 }
 
 .stat-label {
     font-size: 0.75rem;
     color: var(--text-muted);
-    font-weight: 500;
+    font-weight: 600;
 }
 
-/* Specific Stat Styles */
-.stat-card.blue .stat-icon {
+/* Specific Stat Styles (Using new palette) */
+.stat-card.blue .stat-icon-wrapper {
     background: #E0F2FE;
     color: #0284C7;
 }
 
-.stat-card.green .stat-icon {
+.stat-card.green .stat-icon-wrapper {
     background: #D1FAE5;
     color: #059669;
 }
 
-.stat-card.red .stat-icon {
+.stat-card.red .stat-icon-wrapper {
     background: #FEE2E2;
     color: #DC2626;
 }
 
-.stat-card.orange .stat-icon {
-    background: #FFEDD5;
-    color: #EA580C;
+.stat-card.gold .stat-icon-wrapper {
+    background: #FEF3C7;
+    color: var(--accent-gold);
+    /* Using gold for engagement */
+}
+
+.stat-card.gold .stat-value {
+    color: #D97706;
+    /* Darker gold text */
+}
+
+/* --- Up Next Banner --- */
+.up-next-card {
+    background: var(--primary-gradient);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    color: white;
+    box-shadow: 0 10px 25px -5px rgba(123, 44, 191, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.up-next-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='50' cy='50' r='40' stroke='white' stroke-width='2' fill='none' opacity='0.05'/%3E%3Cpath d='M80 80L100 100' stroke='white' stroke-width='2' opacity='0.05'/%3E%3C/svg%3E");
+    opacity: 0.3;
+}
+
+.up-next-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 2;
+}
+
+.time-badge {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.up-next-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 4px;
+    position: relative;
+    z-index: 2;
+}
+
+.up-next-details {
+    display: flex;
+    gap: 16px;
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.btn-join {
+    background: white;
+    color: var(--royal-violet);
+    border: none;
+    padding: 10px 24px;
+    border-radius: 12px;
+    font-weight: 700;
+    width: 100%;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 2;
+    transition: transform 0.2s;
+}
+
+.btn-join:active {
+    transform: scale(0.98);
 }
 
 /* 4. Horizontal Scroll Section (Courses) */
@@ -213,15 +312,33 @@ header {
 }
 
 .course-card {
-    min-width: 260px;
+    min-width: 280px;
+    /* Wider */
     scroll-snap-align: center;
     background: white;
     border-radius: 24px;
-    padding: 20px;
+    padding: 24px;
     box-shadow: var(--shadow-md);
     position: relative;
-    border-left: 6px solid;
-    /* Dynamic Color */
+    /* Bold borders */
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-top: 6px solid;
+    /* Move color to top or keep left */
+    /* Dynamic Color applied to border-top */
+}
+
+.course-card .progress-container {
+    height: 6px;
+    background: #F3F4F6;
+    border-radius: 4px;
+    margin-top: 16px;
+    overflow: hidden;
+}
+
+.course-card .progress-bar {
+    height: 100%;
+    border-radius: 4px;
+    /* width set via JS */
 }
 
 .course-header {
@@ -270,25 +387,26 @@ header {
     font-weight: bold;
 }
 
-/* 5. Bottom Navigation (GLASS MORPHISM HERE) */
+/* 5. Bottom Navigation */
 .bottom-nav {
     position: fixed;
     bottom: 20px;
     left: 20px;
     right: 20px;
     height: var(--nav-height);
-    background: rgba(30, 30, 35, 0.85);
-    /* Dark Glass */
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: #1e1e23;
+    /* Dark background */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-radius: 40px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    /* Even spacing */
     align-items: center;
-    padding: 0 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    padding: 0 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
     z-index: 1000;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .nav-item {
@@ -296,70 +414,103 @@ header {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.4);
     transition: all 0.3s ease;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+    width: 60px;
+    height: 100%;
+    gap: 6px;
+    /* Increased Spacing */
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+    /* Above slider */
 }
 
+/* Slider (Login-like Toggle) */
+.nav-slider {
+    position: absolute;
+    top: 50%;
+    margin-top: -32px;
+    /* Vertically centered (64px height / 2) */
+    left: 16px;
+    width: 64px;
+    /* Match item width */
+    height: 64px;
+    /* Squircle */
+    background: #ffffff;
+    /* White Circle as per ref */
+    border-radius: 50%;
+    /* Back to Circle for "as shown images" */
+    z-index: 1;
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+    opacity: 0;
+}
+
+/* Active State: Filled/Glow */
 .nav-item.active {
-    color: white;
-    background: rgba(255, 255, 255, 0.2);
+    color: var(--royal-violet);
+    /* Dark/Brand color on white */
+    font-weight: 700;
+}
+
+/* Ensure SVG doesn't fill weirdly on white background */
+.nav-item.active svg {
+    fill: none;
+    stroke: currentColor;
+    /* Matches text color */
+    stroke-width: 2.5px;
 }
 
 .nav-item svg {
     width: 24px;
     height: 24px;
+    transition: all 0.2s ease;
 }
 
-/* 6. FAB (Floating Action Button) */
-.fab-container {
-    position: fixed;
-    bottom: 45px;
-    /* Offset to nest in nav curve if needed, or higher */
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1002;
+.nav-label {
+    display: none;
+    /* User requested removing all text */
 }
 
-.fab {
-    width: var(--fab-size);
-    height: var(--fab-size);
-    border-radius: 50%;
+/* 6. Primary Action (Scan) - Integrated */
+.nav-item-primary {
+    color: white !important;
+    /* Always white */
+    margin-top: -45px;
+    /* Significant lift for floating effect */
+    justify-content: center;
+    position: relative;
+    z-index: 10;
+    /* Above everything */
+}
+
+.nav-icon-primary {
+    width: 72px;
+    /* Bigger */
+    height: 72px;
+    /* Bigger */
     background: var(--primary-gradient);
-    border: none;
-    box-shadow: var(--shadow-fab);
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    cursor: pointer;
-    animation: pulse-glow 2s infinite;
+    box-shadow: 0 8px 25px rgba(124, 58, 237, 0.6);
+    border: 6px solid #1e1e23;
+    /* Thicker cutout border */
     transition: transform 0.2s;
+    margin-bottom: 0;
 }
 
-.fab:active {
-    transform: translateX(-50%) scale(0.9);
+.nav-item-primary:active .nav-icon-primary {
+    transform: scale(0.95);
+    box-shadow: 0 4px 10px rgba(124, 58, 237, 0.4);
 }
 
-.fab svg {
-    width: 32px;
-    height: 32px;
-}
-
-@keyframes pulse-glow {
-    0% {
-        box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.7);
-    }
-
-    70% {
-        box-shadow: 0 0 0 15px rgba(124, 58, 237, 0);
-    }
-
-    100% {
-        box-shadow: 0 0 0 0 rgba(124, 58, 237, 0);
-    }
+.nav-item-primary .nav-label {
+    color: white;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 /* 7. QR Scanner Modal */
@@ -556,4 +707,9 @@ header {
 /* Helpers */
 .hidden {
     display: none !important;
+}
+
+.user-name-display {
+    font-size: 1.2rem;
+    font-weight: 600;
 }
