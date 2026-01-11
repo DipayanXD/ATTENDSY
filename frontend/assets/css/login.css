@@ -1,0 +1,552 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --bg-deep-navy: #1C1D5A;
+    --text-light: #ffffff;
+    --text-muted: #cccccc;
+    --card-bg: #2a2d6e;
+    --success: #28a745;
+    --error: #dc3545;
+    --dark-amethyst: #10002bff;
+    --dark-amethyst-2: #240046ff;
+    --indigo-ink: #3c096cff;
+    --indigo-velvet: #5a189aff;
+    --royal-violet: #7b2cbfff;
+    --lavender-purple: #9d4eddff;
+    --mauve-magic: #c77dffff;
+    --mauve: #e0aaffff;
+
+    /* Added Variables */
+    --bg-frosted: rgba(253, 247, 255, 0.85);
+    --border-frost: rgba(255, 255, 255, 0.6);
+    --shadow-soft: rgba(0, 0, 0, 0.1);
+    --shadow-violet: rgba(123, 44, 191, 0.3);
+    --shadow-violet-strong: rgba(123, 44, 191, 0.4);
+    --shadow-mauve-glow: rgba(199, 125, 255, 0.6);
+    --shadow-mauve-soft: rgba(199, 125, 255, 0.4);
+    --bg-input-dark: #320661;
+    --border-subtle: rgba(255, 255, 255, 0.05);
+    --shadow-faint: rgba(0, 0, 0, 0.05);
+    --highlight-inner: rgba(255, 255, 255, 0.08);
+    --highlight-inner-strong: rgba(255, 255, 255, 0.15);
+    --bg-input-focus: #40106e;
+    --shadow-lavender-halo: rgba(157, 78, 221, 0.25);
+    --highlight-strong: rgba(255, 255, 255, 0.3);
+    --shadow-inset: rgba(0, 0, 0, 0.5);
+    --shadow-violet-faint: rgba(123, 44, 191, 0.2);
+    --bg-white-10: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background-color: var(--dark-amethyst);
+    /* Dark Amethyst */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.container {
+    background-color: var(--bg-frosted);
+    /* Frosted Lavender-White */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-frost);
+    border-radius: 30px;
+    /* 1. Card Halo */
+    box-shadow: 0 20px 50px var(--shadow-soft), 0 0 80px var(--shadow-violet);
+    /* Faint Violet Aura */
+    position: relative;
+    overflow: hidden;
+    width: 768px;
+    max-width: 100%;
+    min-height: 480px;
+}
+
+/* Headings inside form (Light BG) - Need contrast so using darker violet, but user asked for Mauve. 
+   I will use a gradient text or darker violet for visibility if needed, but sticking to request for now with text-shadow for readability */
+.container h1 {
+    color: var(--royal-violet);
+    /* Royal Violet (Darker for contrast on light bg) */
+}
+
+/* Headings inside Toggle Panel (Dark BG) */
+/* Headings inside Toggle Panel (Dark BG) */
+.toggle-panel h1 {
+    color: var(--mauve);
+    /* Pale Mauve */
+}
+
+/* Paragraphs inside Toggle Panel */
+.toggle-panel p {
+    color: var(--text-light);
+
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+.container p {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.3px;
+    margin: 20px 0;
+    color: var(--text-light);
+}
+
+.container span {
+    font-size: 12px;
+    color: var(--lavender-purple);
+    margin-bottom: 15px;
+}
+
+
+.container button {
+    background-color: var(--royal-violet);
+    color: var(--text-light);
+    font-size: 13px;
+    padding: 12px 45px;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    /* 3. Button Aura (Idle) */
+    box-shadow: 0 4px 15px var(--shadow-violet-strong);
+    position: relative;
+    overflow: hidden;
+}
+
+.container button:hover {
+    background-color: var(--lavender-purple);
+    /* Lighter Violet */
+    transform: translateY(-2px);
+    /* 3. Brighter Bloom */
+    box-shadow: 0 8px 25px var(--shadow-mauve-glow);
+    /* Mauve Magic Glow */
+}
+
+.container button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px var(--shadow-violet);
+}
+
+.container button.hidden {
+    background-color: transparent;
+    border: 1px solid var(--text-light);
+    border-radius: 50px;
+    box-shadow: none;
+}
+
+.container button.hidden:hover {
+    background-color: var(--bg-white-10);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px var(--shadow-sm);
+}
+
+.container form {
+    background-color: transparent;
+    /* Transparent for glass effect */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    height: 100%;
+}
+
+.container input {
+    background-color: var(--bg-input-dark);
+    /* 1. Softened darkness (Slightly lighter than pure black-indigo) */
+    border: 1px solid var(--border-subtle);
+    /* Subtle structure */
+    color: var(--text-light);
+    margin: 12px 0;
+    /* Increased margin */
+    padding: 14px 20px;
+    /* 6. Breathing Room */
+    font-size: 13px;
+    border-radius: 50px;
+    width: 100%;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow:
+        0 4px 15px var(--shadow-faint),
+        /* Faint floating shadow */
+        inset 0 1px 0 var(--highlight-inner);
+    /* Soft inner highlight */
+    backdrop-filter: blur(5px);
+    /* Hint of glass */
+}
+
+.container input::placeholder {
+    color: var(--text-light);
+    /* 4. Softer lavender tone */
+    opacity: 0.6;
+    /* Lower opacity */
+    letter-spacing: 0.8px;
+    /* Increased letter spacing */
+    font-weight: 400;
+}
+
+.container input:focus {
+    background-color: var(--bg-input-focus);
+    /* 3. Shift brighter */
+    border-color: var(--lavender-purple);
+    /* Border lights up */
+    /* 3. Lavender Halo & Glow Moment */
+    box-shadow:
+        0 8px 25px var(--shadow-lavender-halo),
+        /* Lavender halo */
+        inset 0 1px 0 var(--highlight-inner-strong);
+    /* Stronger inner highlight */
+    transform: translateY(-2px);
+    /* Gentle lift */
+}
+
+.form-container {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+}
+
+.sign-in {
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
+
+.container.active .sign-in {
+    transform: translateX(100%);
+}
+
+.sign-up {
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
+}
+
+.container.active .sign-up {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+    animation: move 0.6s;
+}
+
+@keyframes move {
+
+    0%,
+    49.99% {
+        opacity: 0;
+        z-index: 1;
+    }
+
+    50%,
+    100% {
+        opacity: 1;
+        z-index: 5;
+    }
+}
+
+.social-icons {
+    margin: 20px 0;
+}
+
+.social-icons a {
+    border: 1px solid #ccc;
+    border-radius: 20%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 3px;
+    width: 40px;
+    height: 40px;
+}
+
+.toggle-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: all 0.6s ease-in-out;
+    border-radius: 20px;
+    z-index: 1000;
+}
+
+.container.active .toggle-container {
+    transform: translateX(-100%);
+    border-radius: 20px;
+}
+
+.toggle {
+    /* 2. Lit Glass Behavior */
+    background: radial-gradient(circle at center, var(--lavender-purple) 0%, var(--royal-violet) 50%, var(--indigo-ink) 100%);
+    /* Slight bright center, darker edges */
+    height: 100%;
+    color: #fff;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: all 0.6s ease-in-out;
+}
+
+.container.active .toggle {
+    transform: translateX(50%);
+}
+
+.toggle-panel {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 30px;
+    text-align: center;
+    top: 0;
+    transform: translateX(0);
+    transition: all 0.6s ease-in-out;
+}
+
+/* Toggle Panel Animations */
+.toggle-left {
+    transform: translateX(-200%);
+    /* Start off-screen left */
+}
+
+.container.active .toggle-left {
+    transform: translateX(0);
+    /* Slide in to center */
+}
+
+.toggle-right {
+    right: 0;
+    transform: translateX(0);
+    /* Start in center */
+}
+
+.container.active .toggle-right {
+    transform: translateX(200%);
+    /* Slide out to right */
+}
+
+/* Role Toggle Slider */
+/* Role Toggle Slider */
+.role-toggle-container {
+    width: 100%;
+    margin: 10px 0 20px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.role-switcher {
+    position: relative;
+    width: 220px;
+    height: 50px;
+    background-color: var(--dark-amethyst-2);
+    /* Dark Amethyst-2 */
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px;
+    box-shadow: inset 0 2px 10px var(--shadow-inset), 0 0 0 1px var(--border-subtle);
+}
+
+.role-btn {
+    width: 50%;
+    height: 100%;
+    background: transparent !important;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--lavender-purple);
+    /* Lavender Purple inactive */
+    z-index: 2;
+    transition: color 0.3s ease;
+    margin-top: 0 !important;
+    padding: 0 !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+}
+
+.role-slider {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    height: calc(100% - 8px);
+    background: var(--royal-violet);
+    /* Royal Violet */
+    border-radius: 50px;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 1;
+    box-shadow: 0 4px 15px var(--shadow-mauve-soft), inset 0 1px 0 var(--highlight-strong);
+    /* Mauve Glow */
+}
+
+.role-switcher.teacher-active .role-slider {
+    transform: translateX(100%);
+}
+
+/* Recalculating transform simpler: center to center distance is roughly 50% width */
+
+
+.role-btn.active {
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        min-height: 850px;
+        border-radius: 20px;
+        /* Reduced radius */
+        margin: 20px;
+        max-width: calc(100% - 40px);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        /* Reduced shadow/glow for calm mobile feel */
+        box-shadow: 0 10px 30px var(--shadow-soft), 0 0 40px var(--shadow-violet-faint);
+    }
+
+    .container form {
+        padding: 0 30px;
+        background-color: transparent;
+    }
+
+    .form-container {
+        position: absolute;
+        top: 30%;
+        left: 0;
+        width: 100%;
+        height: 70%;
+        transition: all 0.6s ease-in-out;
+    }
+
+    .sign-in {
+        z-index: 2;
+        opacity: 1;
+    }
+
+    .container.active .sign-in {
+        transform: translateY(20%);
+        opacity: 0;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .sign-up {
+        opacity: 0;
+        z-index: 1;
+        transform: translateY(20%);
+    }
+
+    .container.active .sign-up {
+        transform: translateY(0);
+        opacity: 1;
+        z-index: 5;
+        animation: none;
+    }
+
+    /* Toggle Container (Top Branding Header) */
+    .toggle-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 30%;
+        border-radius: 20px 20px 0 0;
+        overflow: hidden;
+        z-index: 100;
+        transform: none !important;
+    }
+
+    .container.active .toggle-container {
+        transform: none !important;
+        border-radius: 20px 20px 0 0;
+    }
+
+    /* Keep the toggle internal sliding mechanism for text switching */
+    .toggle {
+        height: 100%;
+        width: 200%;
+        left: -100%;
+        transform: translateX(0);
+        background: radial-gradient(circle at center, var(--lavender-purple) 0%, var(--royal-violet) 50%, var(--indigo-ink) 100%);
+    }
+
+    .container.active .toggle {
+        transform: translateX(50%);
+    }
+
+    .toggle-panel {
+        width: 50%;
+        height: 100%;
+        padding: 0 20px;
+    }
+
+    /* Mobile Text & Input Styling */
+    .container h1 {
+        font-size: 24px;
+    }
+
+    .toggle-panel h1 {
+        font-size: 22px;
+    }
+
+    .toggle-panel p {
+        font-size: 13px;
+    }
+
+    .container input {
+        height: 50px;
+        /* Taller touch targets */
+        padding: 0 20px;
+        font-size: 16px;
+        /* Prevents auto-zoom on iOS */
+        margin: 10px 0;
+    }
+
+    .container button {
+        height: 50px;
+        font-size: 15px;
+        margin-top: 20px;
+        width: 100%;
+    }
+
+    .role-switcher {
+        width: 240px;
+        height: 48px;
+    }
+
+    .role-btn {
+        font-size: 14px;
+    }
+
+    .social-icons {
+        margin: 15px 0;
+    }
+}

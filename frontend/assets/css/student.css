@@ -1,0 +1,559 @@
+/* 
+  Student Dashboard Mobile-First Styles 
+  Design: Clean, Modern, "AttendSy"
+*/
+
+:root {
+    /* Brand Colors */
+    --primary-gradient: linear-gradient(135deg, #7C3AED 0%, #3B82F6 100%);
+    --primary-color: #7C3AED;
+    --secondary-color: #3B82F6;
+
+    /* Status Colors */
+    --success-color: #10B981;
+    --warning-color: #F59E0B;
+    --danger-color: #EF4444;
+    --text-dark: #1F2937;
+    --text-muted: #6B7280;
+
+    /* Backgrounds */
+    --bg-body: #F9FAFB;
+    --bg-card: #FFFFFF;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-fab: 0 8px 20px rgba(124, 58, 237, 0.4);
+
+    /* Layout */
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --header-height: 70px;
+    --nav-height: 76px;
+    --fab-size: 64px;
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-dark);
+    padding-bottom: calc(var(--nav-height) + 20px);
+    /* Space for bottom nav */
+}
+
+/* --- Typography --- */
+h1,
+h2,
+h3,
+h4 {
+    margin: 0;
+    font-weight: 700;
+}
+
+.text-lg {
+    font-size: 1.25rem;
+}
+
+.text-md {
+    font-size: 1rem;
+}
+
+.text-sm {
+    font-size: 0.875rem;
+}
+
+.text-xs {
+    font-size: 0.75rem;
+}
+
+.text-muted {
+    color: var(--text-muted);
+}
+
+/* --- Components --- */
+
+/* 1. Cards (Solid White, No Glass) */
+.card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 16px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.card:active {
+    transform: scale(0.98);
+}
+
+/* 2. Header */
+header {
+    padding: 20px 24px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: transparent;
+}
+
+.user-greeting h1 {
+    font-size: 1.5rem;
+    color: #111827;
+}
+
+.user-avatar {
+    width: 44px;
+    height: 44px;
+    background: var(--primary-gradient);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(124, 58, 237, 0.2);
+}
+
+/* 3. Quick Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 0 20px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: white;
+    padding: 16px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 110px;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* Specific Stat Styles */
+.stat-card.blue .stat-icon {
+    background: #E0F2FE;
+    color: #0284C7;
+}
+
+.stat-card.green .stat-icon {
+    background: #D1FAE5;
+    color: #059669;
+}
+
+.stat-card.red .stat-icon {
+    background: #FEE2E2;
+    color: #DC2626;
+}
+
+.stat-card.orange .stat-icon {
+    background: #FFEDD5;
+    color: #EA580C;
+}
+
+/* 4. Horizontal Scroll Section (Courses) */
+.section-header {
+    padding: 0 24px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.scroll-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 16px;
+    padding: 4px 24px 24px;
+    /* Bottom padding for shadow */
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+}
+
+.scroll-container::-webkit-scrollbar {
+    display: none;
+}
+
+.course-card {
+    min-width: 260px;
+    scroll-snap-align: center;
+    background: white;
+    border-radius: 24px;
+    padding: 20px;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    border-left: 6px solid;
+    /* Dynamic Color */
+}
+
+.course-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.course-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: #F3F4F6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.progress-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: conic-gradient(var(--course-color) var(--percent), #E5E7EB 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress-circle::before {
+    content: '';
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50%;
+}
+
+.progress-value {
+    position: absolute;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* 5. Bottom Navigation (GLASS MORPHISM HERE) */
+.bottom-nav {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    height: var(--nav-height);
+    background: rgba(30, 30, 35, 0.85);
+    /* Dark Glass */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 40px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.nav-item.active {
+    color: white;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.nav-item svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* 6. FAB (Floating Action Button) */
+.fab-container {
+    position: fixed;
+    bottom: 45px;
+    /* Offset to nest in nav curve if needed, or higher */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1002;
+}
+
+.fab {
+    width: var(--fab-size);
+    height: var(--fab-size);
+    border-radius: 50%;
+    background: var(--primary-gradient);
+    border: none;
+    box-shadow: var(--shadow-fab);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    animation: pulse-glow 2s infinite;
+    transition: transform 0.2s;
+}
+
+.fab:active {
+    transform: translateX(-50%) scale(0.9);
+}
+
+.fab svg {
+    width: 32px;
+    height: 32px;
+}
+
+@keyframes pulse-glow {
+    0% {
+        box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 15px rgba(124, 58, 237, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(124, 58, 237, 0);
+    }
+}
+
+/* 7. QR Scanner Modal */
+.scanner-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.scanner-modal.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.scanner-viewbox {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+#reader {
+    width: 100% !important;
+    height: 100% !important;
+    border: none !important;
+}
+
+#reader video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: 0 !important;
+}
+
+/* Viewfinder Overlay */
+.scan-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 280px;
+    height: 280px;
+    border-radius: 20px;
+    box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.6);
+    z-index: 2002;
+}
+
+.scan-overlay::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+}
+
+.scan-corner {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-color: var(--primary-color);
+    border-style: solid;
+    border-width: 4px;
+}
+
+.tl {
+    top: -2px;
+    left: -2px;
+    border-right: 0;
+    border-bottom: 0;
+    border-top-left-radius: 20px;
+}
+
+.tr {
+    top: -2px;
+    right: -2px;
+    border-left: 0;
+    border-bottom: 0;
+    border-top-right-radius: 20px;
+}
+
+.bl {
+    bottom: -2px;
+    left: -2px;
+    border-right: 0;
+    border-top: 0;
+    border-bottom-left-radius: 20px;
+}
+
+.br {
+    bottom: -2px;
+    right: -2px;
+    border-left: 0;
+    border-top: 0;
+    border-bottom-right-radius: 20px;
+}
+
+.scan-controls {
+    padding: 30px;
+    background: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+.btn-icon-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    color: white;
+}
+
+/* Views & Animation */
+.view-section {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.view-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Calendar Tweaks */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    text-align: center;
+    margin-top: 16px;
+}
+
+.cal-day-name {
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.cal-cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    border-radius: 50%;
+}
+
+.cal-cell.today {
+    background: var(--primary-color);
+    color: white;
+}
+
+.cal-cell.present {
+    position: relative;
+}
+
+.cal-cell.present::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    width: 4px;
+    height: 4px;
+    background: var(--success-color);
+    border-radius: 50%;
+}
+
+/* Helpers */
+.hidden {
+    display: none !important;
+}

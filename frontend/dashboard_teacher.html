@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendsy | Teacher Command Center</title>
+    <meta name="description" content="Premium teacher dashboard for smart attendance management">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+
+<body>
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         NAVIGATION BAR (Crextio Style)
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <header>
+        <div class="nav-brand">Attendsy</div>
+
+        <div class="nav-right-group">
+            <nav class="nav-tabs">
+                <span class="nav-slider"></span>
+                <button class="nav-tab active" onclick="switchTab('overview')">Overview</button>
+                <button class="nav-tab" onclick="switchTab('sessions')">Live Session</button>
+                <button class="nav-tab" onclick="switchTab('students')">Students</button>
+                <button class="nav-tab" onclick="switchTab('engagement')">Engagement</button>
+                <button class="nav-tab" onclick="switchTab('analytics')">Analytics</button>
+            </nav>
+
+            <div class="user-profile">
+                <button class="notification-btn" title="Notifications">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                    </svg>
+                </button>
+                <div class="avatar">T</div>
+                <button class="btn btn-secondary btn-sm" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         MAIN CONTENT
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <main>
+        <!-- ═══════════════════════════════════════════════════════════════════
+             TAB: OVERVIEW
+             ═══════════════════════════════════════════════════════════════════ -->
+        <section id="tab-overview" class="tab-content">
+            <div style="margin-bottom: 2rem; margin-top: 1rem;">
+                <h1 style="font-size: 3rem; font-weight: 400; color: #111111; letter-spacing: -1.5px; margin: 0;">
+                    Welcome in, <span id="teacher-name-heading">Professor</span>
+                </h1>
+            </div>
+            <div class="dashboard-overview">
+                <!-- Today's Schedule Card -->
+                <div class="glass-card">
+                    <div class="flex-between mb-4">
+                        <h3>My Courses</h3>
+                        <span class="text-xs text-muted" id="current-date"></span>
+                    </div>
+                    <div id="schedule-list">
+                        <div class="text-center text-muted p-4">Loading courses...</div>
+                    </div>
+                </div>
+
+                <!-- Metrics Grid -->
+                <div class="metrics-grid">
+                    <div class="glass-card metric-card">
+                        <div class="metric-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="20" x2="18" y2="10" />
+                                <line x1="12" y1="20" x2="12" y2="4" />
+                                <line x1="6" y1="20" x2="6" y2="14" />
+                            </svg>
+                        </div>
+                        <span class="metric-label">Avg Attendance</span>
+                        <span class="metric-value" id="metric-avg">--%</span>
+                        <span class="metric-change positive">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="18 15 12 9 6 15" />
+                            </svg>
+                            3.2%
+                        </span>
+                    </div>
+                    <div class="glass-card metric-card">
+                        <div class="metric-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                            </svg>
+                        </div>
+                        <span class="metric-label">Active Students</span>
+                        <span class="metric-value" id="metric-students">--</span>
+                        <span class="text-xs text-muted">Total Enrolled</span>
+                    </div>
+                    <div class="glass-card metric-card metric-card-clickable" onclick="openAtRiskModal()" id="card-risk"
+                        style="position: relative; overflow: visible;">
+                        <!-- Pulsing Badge -->
+                        <div id="risk-badge" class="risk-badge hidden">HIGH RISK</div>
+
+                        <div class="metric-icon warning">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                                <line x1="12" y1="9" x2="12" y2="13" />
+                                <line x1="12" y1="17" x2="12.01" y2="17" />
+                            </svg>
+                        </div>
+                        <div class="flex-between w-full">
+                            <span class="metric-label">Low Attendance</span>
+                            <span class="text-xs text-muted" id="last-updated-risk">Updated now</span>
+                        </div>
+
+                        <div class="flex-start items-baseline gap-2">
+                            <span class="metric-value gradient-text-error" id="metric-risk">--</span>
+                            <!-- Trend Arrow -->
+                            <span class="metric-trend negative" id="risk-trend">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="3">
+                                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                                    <polyline points="17 6 23 6 23 12"></polyline>
+                                </svg>
+                                <span id="risk-trend-val">+2 vs last week</span>
+                            </span>
+                        </div>
+
+                        <!-- Progress Bar (Existing) -->
+                        <div class="progress-track">
+                            <div class="progress-fill" id="risk-progress-bar" style="width: 0%"></div>
+                        </div>
+
+                        <!-- Breakdown -->
+                        <div class="flex-between mt-2 text-xs">
+                            <span class="text-muted">Students at risk</span>
+                            <span class="font-bold" id="risk-breakdown" style="color: var(--text-primary);">-- High, --
+                                Med</span>
+                        </div>
+
+                        <!-- Hover Preview Tooltip (Existing) -->
+                        <div class="hover-preview-tooltip hidden" id="risk-preview-tooltip">
+                            <div class="tooltip-header">Top 3 At Risk</div>
+                            <ul class="tooltip-list" id="risk-preview-list">
+                                <!-- Populated by JS -->
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="glass-card metric-card">
+                        <div class="metric-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <circle cx="12" cy="12" r="6" />
+                                <circle cx="12" cy="12" r="2" />
+                            </svg>
+                        </div>
+                        <span class="metric-label">Active Sessions</span>
+                        <span class="metric-value" id="metric-sessions" style="color: var(--royal-violet);">--</span>
+                        <span class="text-xs text-muted">Currently Running</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Action: Create Course -->
+            <div class="glass-card">
+                <h3>Create New Course</h3>
+                <form onsubmit="createCourse(event)"
+                    style="display: grid; grid-template-columns: 1fr 1fr 2fr auto; gap: 1rem; margin-top: 1rem; align-items: end;">
+                    <div>
+                        <label class="text-xs text-muted">Course Code</label>
+                        <input type="text" id="course-code" placeholder="e.g. CS101" required>
+                    </div>
+                    <div>
+                        <label class="text-xs text-muted">Course Name</label>
+                        <input type="text" id="course-name" placeholder="Course Name" required>
+                    </div>
+                    <div>
+                        <label class="text-xs text-muted">Description</label>
+                        <input type="text" id="course-desc" placeholder="Brief description...">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════════
+             TAB: LIVE SESSION (Placeholder for overlay trigger)
+             ═══════════════════════════════════════════════════════════════════ -->
+        <section id="tab-sessions" class="tab-content hidden" style="display: none;">
+            <!-- Session is managed via overlay -->
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════════
+             TAB: STUDENTS
+             ═══════════════════════════════════════════════════════════════════ -->
+        <section id="tab-students" class="tab-content hidden">
+            <!-- Control Bar -->
+            <div class="control-bar glass-card mb-4 flex-between">
+                <div class="flex-align-center gap-2">
+                    <div class="dropdown-filter">
+                        <button class="btn btn-ghost btn-sm">Columns ▼</button>
+                    </div>
+                    <div class="dropdown-filter">
+                        <button class="btn btn-ghost btn-sm">Course ▼</button>
+                    </div>
+                    <div class="dropdown-filter">
+                        <button class="btn btn-ghost btn-sm">Status ▼</button>
+                    </div>
+                    <div class="search-input" style="width: 240px;">
+                        <input type="text" placeholder="Search students..." id="student-search">
+                    </div>
+                </div>
+                <div class="flex-align-center gap-2">
+                    <button class="btn btn-primary" onclick="openAddStudentModal()">+ Add Student</button>
+                    <button class="btn btn-secondary btn-sm" title="Export">📤 Export</button>
+                </div>
+            </div>
+
+            <!-- Student Directory Table -->
+            <div class="glass-card table-container">
+                <table class="data-table" id="students-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 40px;"><input type="checkbox"></th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Course / Role</th>
+                            <th>Enrolled Date</th>
+                            <th>Status</th>
+                            <th style="text-align: right;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="student-directory-body">
+                        <!-- Rows loaded via JS -->
+                        <tr>
+                            <td colspan="7" class="text-center p-4 text-muted">Loading directory...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Add Student Modal -->
+        <div id="add-student-modal" class="modal-overlay hidden">
+            <div class="glass-card modal-content">
+                <h3 class="mb-4">Add New Student</h3>
+                <form onsubmit="addStudent(event)">
+                    <div class="mb-3">
+                        <label class="text-xs text-muted">Full Name</label>
+                        <input type="text" id="new-student-name" placeholder="John Doe" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="text-xs text-muted">Email Address</label>
+                        <input type="email" id="new-student-email" placeholder="john@example.com" required>
+                    </div>
+                    <div class="flex-end gap-2 mt-4">
+                        <button type="button" class="btn btn-secondary" onclick="closeAddStudentModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Add Student</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- At-Risk Students Modal -->
+        <div id="at-risk-modal" class="modal-overlay hidden">
+            <div class="glass-card modal-content at-risk-modal">
+                <div class="modal-header flex-between mb-4">
+                    <h3>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--status-warning-text)"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            style="vertical-align: middle; margin-right: 8px;">
+                            <path
+                                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                            <line x1="12" y1="9" x2="12" y2="13" />
+                            <line x1="12" y1="17" x2="12.01" y2="17" />
+                        </svg>
+                        Students at Risk
+                    </h3>
+                    <button class="btn btn-ghost btn-sm close-btn" onclick="closeAtRiskModal()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Risk Summary Stats -->
+                <div class="risk-summary mb-4">
+                    <div class="risk-stat risk-high">
+                        <span class="risk-count" id="risk-high-count">0</span>
+                        <span class="risk-label">High Risk</span>
+                    </div>
+                    <div class="risk-stat risk-medium">
+                        <span class="risk-count" id="risk-medium-count">0</span>
+                        <span class="risk-label">Medium Risk</span>
+                    </div>
+                    <div class="risk-stat risk-low">
+                        <span class="risk-count" id="risk-low-count">0</span>
+                        <span class="risk-label">Low Risk</span>
+                    </div>
+                </div>
+
+                <div class="risk-filter-tabs mb-4">
+                    <button class="risk-tab active" onclick="filterAtRiskByLevel('all')">All</button>
+                    <button class="risk-tab" onclick="filterAtRiskByLevel('high')">
+                        <span class="risk-dot high"></span> High
+                    </button>
+                    <button class="risk-tab" onclick="filterAtRiskByLevel('medium')">
+                        <span class="risk-dot medium"></span> Medium
+                    </button>
+                    <button class="risk-tab" onclick="filterAtRiskByLevel('low')">
+                        <span class="risk-dot low"></span> Low
+                    </button>
+                </div>
+
+                <!-- At-Risk Students List -->
+                <div class="at-risk-list" id="at-risk-list">
+                    <div class="text-center text-muted p-4">Loading at-risk students...</div>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="modal-footer mt-4 flex-end gap-2">
+                    <button class="btn btn-secondary" onclick="closeAtRiskModal()">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════════════
+             TAB: ENGAGEMENT (New)
+             ═══════════════════════════════════════════════════════════════════ -->
+        <section id="tab-engagement" class="tab-content hidden">
+            <div class="glass-card">
+                <h3 class="mb-4">Engagement Tools</h3>
+
+                <!-- Sub-tabs -->
+                <div class="tab-container">
+                    <button class="tab-btn active" onclick="switchEngagementTab('polls')">Polls</button>
+                    <button class="tab-btn" onclick="switchEngagementTab('quizzes')">Quizzes</button>
+                    <button class="tab-btn" onclick="switchEngagementTab('resources')">Resources</button>
+                </div>
+
+                <!-- Polls Panel -->
+                <div id="engagement-polls" class="engagement-panel">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <h4 class="mb-3">Create a Poll</h4>
+                            <div class="mb-3">
+                                <label class="text-xs text-muted">Question</label>
+                                <input type="text" placeholder="Enter your question..." id="poll-question">
+                            </div>
+                            <div class="mb-3">
+                                <label class="text-xs text-muted">Options (one per line)</label>
+                                <textarea rows="4" placeholder="Option A&#10;Option B&#10;Option C" id="poll-options"
+                                    style="resize: none;"></textarea>
+                            </div>
+                            <div class="flex-between mb-3">
+                                <div style="flex: 1; margin-right: 1rem;">
+                                    <label class="text-xs text-muted">Time Limit</label>
+                                    <select id="poll-time">
+                                        <option value="30">30 seconds</option>
+                                        <option value="60" selected>1 minute</option>
+                                        <option value="120">2 minutes</option>
+                                        <option value="300">5 minutes</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary w-full" onclick="launchPoll()">Launch Poll</button>
+                        </div>
+                        <div class="glass-card" style="background: rgba(123, 44, 191, 0.03);">
+                            <h4 class="mb-3 text-muted">Live Results</h4>
+                            <div id="active-poll-results" class="text-center text-muted p-4">
+                                <p>No active poll</p>
+                                <p class="text-xs mt-2">Create and launch a poll to see live results here</p>
+                            </div>
+                            <!-- Stop Button (Hidden by default) -->
+                            <button id="stop-poll-btn" class="btn btn-secondary w-full hidden mt-3"
+                                onclick="stopPoll()">Stop Session</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quizzes Panel -->
+                <div id="engagement-quizzes" class="engagement-panel hidden">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <h4 class="mb-3">Quick Quiz Builder</h4>
+                            <div class="mb-3">
+                                <label class="text-xs text-muted">Question</label>
+                                <input type="text" placeholder="Enter quiz question..." id="quiz-question">
+                            </div>
+                            <div class="mb-3">
+                                <label class="text-xs text-muted">Options</label>
+                                <div class="quiz-options">
+                                    <div class="flex-between mb-2" style="gap: 0.5rem;">
+                                        <input type="text" placeholder="Option A" class="quiz-opt" data-idx="0"
+                                            style="flex: 1;">
+                                        <button class="btn btn-ghost btn-sm" onclick="toggleCorrect(this)">✓</button>
+                                    </div>
+                                    <div class="flex-between mb-2" style="gap: 0.5rem;">
+                                        <input type="text" placeholder="Option B" class="quiz-opt" data-idx="1"
+                                            style="flex: 1;">
+                                        <button class="btn btn-ghost btn-sm" onclick="toggleCorrect(this)">✓</button>
+                                    </div>
+                                    <div class="flex-between mb-2" style="gap: 0.5rem;">
+                                        <input type="text" placeholder="Option C" class="quiz-opt" data-idx="2"
+                                            style="flex: 1;">
+                                        <button class="btn btn-ghost btn-sm" onclick="toggleCorrect(this)">✓</button>
+                                    </div>
+                                    <div class="flex-between mb-2" style="gap: 0.5rem;">
+                                        <input type="text" placeholder="Option D" class="quiz-opt" data-idx="3"
+                                            style="flex: 1;">
+                                        <button class="btn btn-ghost btn-sm" onclick="toggleCorrect(this)">✓</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary w-full" onclick="addToQuiz()">Add to Quiz</button>
+                        </div>
+                        <div>
+                            <h4 class="mb-3">Quiz Bank</h4>
+                            <div class="glass-card" style="background: rgba(0,0,0,0.02);">
+                                <div class="text-center text-muted p-4">
+                                    <p>No questions added yet</p>
+                                    <p class="text-xs mt-2">Build your quiz by adding questions</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resources Panel -->
+                <div id="engagement-resources" class="engagement-panel hidden">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <h4 class="mb-3">Share Resources</h4>
+                            <div class="mb-3">
+                                <label class="text-xs text-muted">Upload File</label>
+                                <div class="glass-card"
+                                    style="border: 2px dashed rgba(123, 44, 191, 0.3); text-align: center; padding: 2rem; cursor: pointer;">
+                                    <p class="text-muted">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round" style="vertical-align: middle; margin-right: 6px;">
+                                            <path
+                                                d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+                                        </svg>
+                                        Drop files here or click to upload
+                                    </p>
+                                    <p class="text-xs text-muted mt-2">PDF, PPT, DOC, Images up to 25MB</p>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="text-xs text-muted">Or Share a Link</label>
+                                <div class="flex-between" style="gap: 0.5rem;">
+                                    <input type="url" placeholder="https://..." style="flex: 1;">
+                                    <button class="btn btn-primary">Share</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="mb-3">Shared Resources</h4>
+                            <div class="glass-card" style="background: rgba(0,0,0,0.02);">
+                                <div class="text-center text-muted p-4">
+                                    <p>No resources shared</p>
+                                    <p class="text-xs mt-2">Upload files or share links to see them here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════════
+             TAB: ANALYTICS
+             ═══════════════════════════════════════════════════════════════════ -->
+        <section id="tab-analytics" class="tab-content hidden">
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem;">
+                <!-- Attendance Over Time -->
+                <div class="glass-card">
+                    <div class="flex-between mb-4">
+                        <h3>Attendance Trends</h3>
+                        <select class="btn btn-secondary btn-sm" style="padding: 6px 12px;">
+                            <option>Last 7 Days</option>
+                            <option>Last 30 Days</option>
+                            <option>This Semester</option>
+                        </select>
+                    </div>
+                    <div
+                        style="height: 250px; display: flex; align-items: center; justify-content: center; background: rgba(123, 44, 191, 0.03); border-radius: var(--radius-md);">
+                        <div class="text-center text-muted">
+                            <div style="opacity: 0.5;">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                                </svg>
+                            </div>
+                            <p class="mt-2">Attendance line chart</p>
+                            <p class="text-xs">Connect Chart.js for visualization</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="glass-card dark">
+                    <h3 class="mb-4">Quick Stats</h3>
+                    <div class="mb-4">
+                        <div class="flex-between mb-2">
+                            <span style="color: rgba(255,255,255,0.7);">Present Rate</span>
+                            <span style="color: white; font-weight: 700;">78%</span>
+                        </div>
+                        <div class="progress-bar" style="background: rgba(255,255,255,0.1);">
+                            <div class="progress-fill" style="width: 78%;"></div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="flex-between mb-2">
+                            <span style="color: rgba(255,255,255,0.7);">Late Rate</span>
+                            <span style="color: white; font-weight: 700;">15%</span>
+                        </div>
+                        <div class="progress-bar" style="background: rgba(255,255,255,0.1);">
+                            <div class="progress-fill" style="width: 15%; background: var(--status-warning-solid);">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex-between mb-2">
+                            <span style="color: rgba(255,255,255,0.7);">Absent Rate</span>
+                            <span style="color: white; font-weight: 700;">7%</span>
+                        </div>
+                        <div class="progress-bar" style="background: rgba(255,255,255,0.1);">
+                            <div class="progress-fill" style="width: 7%; background: var(--status-error-solid);"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+                <!-- Day/Time Heatmap -->
+                <div class="glass-card">
+                    <h3 class="mb-4">Attendance Heatmap</h3>
+                    <div
+                        style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(123, 44, 191, 0.03); border-radius: var(--radius-md);">
+                        <div class="text-center text-muted">
+                            <div style="opacity: 0.5;">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                    <line x1="16" y1="2" x2="16" y2="6" />
+                                    <line x1="8" y1="2" x2="8" y2="6" />
+                                    <line x1="3" y1="10" x2="21" y2="10" />
+                                </svg>
+                            </div>
+                            <p class="mt-2">Day/Time heatmap</p>
+                            <p class="text-xs">Shows peak attendance periods</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status Distribution -->
+                <div class="glass-card">
+                    <h3 class="mb-4">Status Distribution</h3>
+                    <div
+                        style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(123, 44, 191, 0.03); border-radius: var(--radius-md);">
+                        <div class="text-center text-muted">
+                            <div style="opacity: 0.5;">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
+                                    <path d="M22 12A10 10 0 0 0 12 2v10z" />
+                                </svg>
+                            </div>
+                            <p class="mt-2">Present / Late / Absent</p>
+                            <p class="text-xs">Pie chart visualization</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         LIVE SESSION OVERLAY
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <div id="live-session-overlay" class="hidden">
+        <header class="glass-card live-header">
+            <div class="header-left">
+                <h2 id="live-course-name">CS101: Intro to CS</h2>
+                <span class="live-badge">● LIVE</span>
+            </div>
+            <div class="header-center">
+                <h1 id="live-clock">09:41 AM</h1>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" onclick="closeSessionView()">End Session</button>
+            </div>
+        </header>
+
+        <main class="live-grid">
+            <!-- ACCESS PANEL (Light Glass) -->
+            <div class="access-panel glass-card">
+                <div class="access-toggles">
+                    <button class="toggle-btn active" onclick="setAccessMode('qr')">QR</button>
+                    <button class="toggle-btn" onclick="setAccessMode('pin')">PIN</button>
+                    <button class="toggle-btn" onclick="setAccessMode('both')">Both</button>
+                </div>
+
+                <div id="qr-container" class="qr-box">
+                    <div id="qrcode-display"></div>
+                </div>
+
+                <div id="pin-container" class="pin-box hidden">
+                    <span class="pin-label">Class PIN</span>
+                    <h1 class="pin-code" id="live-pin">----</h1>
+                </div>
+
+                <div class="timer-bar">
+                    <div class="timer-progress" id="qr-timer"></div>
+                </div>
+                <p class="text-xs text-muted mt-2">QR rotates in <span id="timer-count">30</span>s</p>
+            </div>
+
+            <!-- LIST PANEL (Dark) -->
+            <div class="list-panel">
+                <div class="list-header flex-between">
+                    <h3>Live Attendance</h3>
+                    <div class="stats-pills">
+                        <span class="status-pill status-present" id="count-present">0 Present</span>
+                        <span class="status-pill status-absent" id="count-absent">0 Absent</span>
+                    </div>
+                </div>
+
+                <div class="student-list-header">
+                    <span>Student Name</span>
+                    <span>Status</span>
+                    <span>Time</span>
+                </div>
+
+                <div id="live-student-list" class="live-list-scroll">
+                    <!-- Dynamic Items -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/teacher.js"></script>
+</body>
+
+</html>

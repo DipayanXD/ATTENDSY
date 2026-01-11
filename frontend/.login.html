@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/login.css"> <!-- linking with style.css -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- linking with boxicon.com -->
+    <link rel="icon" href="#"> <!-- your logo optional -->
+    <title>Smart Attendance - Login</title>
+</head>
+
+<body>
+    <!-- Sign up -->
+    <div class="container" id="container">
+        <div class="form-container sign-up">
+            <form onsubmit="handleRegister(event)">
+                <h1>Create Account</h1>
+                <!-- Social icons removed for cleaner look or kept if needed, assuming kept but not functional yet -->
+                <h1>Create Account</h1>
+                <!-- Social icons removed -->
+                <span>Register with E-mail</span>
+                <input type="text" id="reg-name" placeholder="Name" required>
+                <input type="email" id="reg-email" placeholder="Enter E-mail" required>
+                <input type="password" id="reg-password" placeholder="Enter Password" required>
+                <select id="reg-role"
+                    style="width: 100%; padding: 10px; margin: 8px 0; border-radius: 8px; border: none; background-color: #eee;">
+                    <option value="student">Student</option>
+                    <option value="teacher">Teacher</option>
+                </select>
+                <button type="submit">Sign Up</button>
+                <p id="reg-error" style="color: red; font-size: 12px; margin-top: 5px;"></p>
+            </form>
+        </div>
+
+        <!-- Sign in -->
+        <div class="form-container sign-in">
+            <form onsubmit="handleLogin(event)">
+                <h1>Sign In</h1>
+                <span>Sign in With Email & Password</span>
+                <input type="email" id="email" placeholder="Enter E-mail" required>
+                <input type="password" id="password" placeholder="Enter Password" required>
+    
+                <button type="submit">Sign In</button>
+                <p id="login-error" style="color: red; font-size: 12px; margin-top: 5px;"></p>
+            </form>
+        </div>
+
+        <!--Redirect to Sign in Page-->
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Welcome To <br> Smart Attendance</h1>
+                    <p>Sign in with your personal details to use all of site features</p>
+                    <button class="hidden" id="login">Sign In</button>
+                </div>
+                <!--Redirect to Sign up Page-->
+                <div class="toggle-panel toggle-right">
+                    <h1>New Here?</h1>
+                    <p>Sign up now and start your journey with us</p>
+                    <button class="hidden" id="register">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- linking with script.js -->
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/login.js"></script>
+
+</body>
+
+</html>
+<!-- created by badr aouragh or boss.exe -->
