@@ -76,6 +76,7 @@ router.post('/session/:sessionId/rotate', verifyToken, verifyRole('teacher'), as
 // 6. Get Live Session Data (Teacher)
 router.get('/session/:sessionId/live', verifyToken, verifyRole('teacher'), async (req, res) => {
     const { sessionId } = req.params;
+    console.log('[LIVE] Fetching live data for session:', sessionId);
     try {
         // Using raw query for complex join logic to maintain behavior
         // Prisma's type-safe joins are great but replacing this specific report query 
@@ -95,6 +96,8 @@ router.get('/session/:sessionId/live', verifyToken, verifyRole('teacher'), async
              ORDER BY status DESC, u.full_name ASC
         `;
 
+        console.log('[LIVE] Query returned', students.length, 'students');
+
         // Convert BigInts and ensure proper serialization
         const formatted = students.map(s => ({
             ...s,
@@ -103,6 +106,7 @@ router.get('/session/:sessionId/live', verifyToken, verifyRole('teacher'), async
         }));
         res.json(formatted);
     } catch (err) {
+        console.error('[LIVE] Error:', err.message);
         res.status(500).json({ error: err.message });
     }
 });

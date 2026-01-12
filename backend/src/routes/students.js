@@ -45,8 +45,8 @@ router.post('/', verifyToken, verifyRole('teacher'), async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(defaultPassword, salt);
 
-        // Insert
-        await prisma.user.create({
+        // Insert the student
+        const student = await prisma.user.create({
             data: {
                 full_name,
                 email,
@@ -55,7 +55,24 @@ router.post('/', verifyToken, verifyRole('teacher'), async (req, res) => {
             }
         });
 
-        res.status(201).json({ message: 'Student added successfully' });
+        // Auto-enroll this student in all of the teacher's courses
+        const teacherCourses = await prisma.course.findMany({
+            where: { teacher_id: req.user.id },
+            select: { id: true }
+        });
+
+        if (teacherCourses.length > 0) {
+            await prisma.enrollment.createMany({
+                data: teacherCourses.map(course => ({
+                    course_id: course.id,
+                    student_id: student.id
+                })),
+                skipDuplicates: true
+            });
+            console.log(`[ENROLL] Auto-enrolled ${full_name} in ${teacherCourses.length} courses`);
+        }
+
+        res.status(201).json({ message: 'Student added and enrolled successfully' });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Failed to add student' });
@@ -82,6 +99,55 @@ router.delete('/:id', verifyToken, verifyRole('teacher'), async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Failed to delete student' });
+    }
+});
+
+// Bulk Enroll All Students in All Teacher's Courses (One-time fix)
+router.post('/enroll-all', verifyToken, verifyRole('teacher'), async (req, res) => {
+    try {
+        // Get all students
+        const students = await prisma.user.findMany({
+            where: { role: 'student' },
+            select: { id: true, full_name: true }
+        });
+
+        // Get all teacher's courses
+        const courses = await prisma.course.findMany({
+            where: { teacher_id: req.user.id },
+            select: { id: true }
+        });
+
+        if (students.length === 0 || courses.length === 0) {
+            return res.json({ message: 'No students or courses to enroll', enrolled: 0 });
+        }
+
+        // Create all enrollment combinations
+        const enrollmentData = [];
+        for (const student of students) {
+            for (const course of courses) {
+                enrollmentData.push({
+                    student_id: student.id,
+                    course_id: course.id
+                });
+            }
+        }
+
+        // Bulk insert (skip duplicates)
+        const result = await prisma.enrollment.createMany({
+            data: enrollmentData,
+            skipDuplicates: true
+        });
+
+        console.log(`[BULK ENROLL] Enrolled ${result.count} student-course pairs`);
+        res.json({
+            message: 'Bulk enrollment complete',
+            enrolled: result.count,
+            total_students: students.length,
+            total_courses: courses.length
+        });
+    } catch (err) {
+        console.error('[BULK ENROLL] Error:', err);
+        res.status(500).json({ error: 'Failed to bulk enroll students' });
     }
 });
 
