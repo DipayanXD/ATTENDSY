@@ -95,7 +95,8 @@ async function handleRegister(e) {
             document.getElementById('reg-error').textContent = data.message;
         }
     } catch (err) {
-        document.getElementById('reg-error').textContent = 'Server error.';
+        console.error('Registration Error:', err);
+        document.getElementById('reg-error').textContent = 'Server error: ' + err.message;
     }
 }
 
