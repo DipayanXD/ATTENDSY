@@ -38,6 +38,7 @@ app.use('/api/attendance', attendanceRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/students', studentRoutes);
 app.use('/api/engagement', engagementRoutes);
+app.use('/api/debug', require('./routes/debug'));
 
 // Base route
 app.get('/', (req, res) => {
