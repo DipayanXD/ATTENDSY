@@ -83,7 +83,7 @@ router.get('/session/:sessionId/live', verifyToken, verifyRole('teacher'), async
         const students = await prisma.$queryRaw`
             SELECT u.full_name, u.id,
                     CASE 
-                        WHEN a.status IS NOT NULL THEN a.status
+                        WHEN a.status IS NOT NULL THEN a.status::text
                         ELSE 'absent'
                     END as status,
                     a.captured_at
@@ -95,8 +95,12 @@ router.get('/session/:sessionId/live', verifyToken, verifyRole('teacher'), async
              ORDER BY status DESC, u.full_name ASC
         `;
 
-        // Convert BigInts if any (though standard IDs here are Ints)
-        const formatted = students.map(s => ({ ...s, captured_at: s.captured_at }));
+        // Convert BigInts and ensure proper serialization
+        const formatted = students.map(s => ({
+            ...s,
+            id: Number(s.id),
+            captured_at: s.captured_at
+        }));
         res.json(formatted);
     } catch (err) {
         res.status(500).json({ error: err.message });
