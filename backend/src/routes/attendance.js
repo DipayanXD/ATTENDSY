@@ -46,7 +46,7 @@ router.post('/start', verifyToken, verifyRole('teacher'), async (req, res) => {
                 pin,
                 latitude,
                 longitude,
-                radius_meters: 20000, // Force 20km radius for testing (ignores frontend value)
+                radius_meters: radius || 50,
                 expires_at: new Date(Date.now() + 60 * 60000) // +60 minutes (extended)
             }
         });
@@ -56,7 +56,6 @@ router.post('/start', verifyToken, verifyRole('teacher'), async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
-
 
 // GET active session for teacher (for restoring on page refresh)
 router.get('/active', verifyToken, verifyRole('teacher'), async (req, res) => {
