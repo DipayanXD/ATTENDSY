@@ -20,16 +20,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Test DB Connection
-async function checkConnection() {
-    try {
-        await prisma.$connect();
-        console.log('Database connected successfully via Prisma');
-    } catch (err) {
-        console.error('Database connection failed:', err);
-    }
-}
-checkConnection();
+// Note: In serverless, Prisma connects lazily on first query
+// No explicit $connect() needed - managed by the singleton in config/prisma.js
 
 // API Routes
 app.use('/api/auth', authRoutes);
