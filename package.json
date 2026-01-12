@@ -6,6 +6,7 @@
         "postinstall": "cd backend && npm install"
     },
     "dependencies": {
+        "@prisma/client": "5.10.2",
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.20.2",
         "cors": "^2.8.5",
@@ -14,9 +15,10 @@
         "jsonwebtoken": "^9.0.2",
         "mysql2": "^3.9.3",
         "pg": "^8.16.3",
+        "prisma": "5.10.2",
         "qrcode": "^1.5.3"
     },
     "engines": {
-        "node": "24.x"
+        "node": "22.x || 24.x"
     }
 }

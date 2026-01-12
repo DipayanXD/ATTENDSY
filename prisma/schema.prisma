@@ -1,0 +1,169 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  student
+  teacher
+}
+
+enum AttendanceStatus {
+  present
+  late
+  absent
+}
+
+enum PollType {
+  poll
+  quiz
+  link
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  full_name     String    @db.VarChar(100)
+  email         String    @unique @db.VarChar(100)
+  password_hash String    @db.VarChar(255)
+  role          Role
+  device_id     String?   @db.VarChar(255)
+  created_at    DateTime  @default(now())
+
+  courses           Course[]
+  enrollments       Enrollment[]
+  attendanceRecords Attendance[]
+  polls             Poll[]
+  pollResponses     PollResponse[]
+  engagementScores  EngagementScore[]
+
+  @@map("users")
+}
+
+model Course {
+  id          Int      @id @default(autoincrement())
+  teacher_id  Int
+  course_name String   @db.VarChar(100)
+  course_code String   @unique @db.VarChar(20)
+  description String?  @db.Text
+  created_at  DateTime @default(now())
+
+  teacher          User              @relation(fields: [teacher_id], references: [id], onDelete: Cascade)
+  enrollments      Enrollment[]
+  sessions         Session[]
+  polls            Poll[]
+  engagementScores EngagementScore[]
+
+  @@map("courses")
+}
+
+model Enrollment {
+  id          Int      @id @default(autoincrement())
+  course_id   Int
+  student_id  Int
+  enrolled_at DateTime @default(now())
+
+  course  Course @relation(fields: [course_id], references: [id], onDelete: Cascade)
+  student User   @relation(fields: [student_id], references: [id], onDelete: Cascade)
+
+  @@unique([course_id, student_id])
+  @@map("enrollments")
+}
+
+model Session {
+  id            Int       @id @default(autoincrement())
+  course_id     Int
+  session_token String    @db.VarChar(255)
+  pin           String?   @db.VarChar(10)
+  latitude      Decimal?  @db.Decimal(10, 8)
+  longitude     Decimal?  @db.Decimal(11, 8)
+  radius_meters Int?      @default(50)
+  is_active     Boolean   @default(true)
+  created_at    DateTime  @default(now())
+  expires_at    DateTime?
+
+  course     Course       @relation(fields: [course_id], references: [id], onDelete: Cascade)
+  attendance Attendance[]
+
+  @@map("sessions")
+}
+
+model Attendance {
+  id          Int              @id @default(autoincrement())
+  session_id  Int
+  student_id  Int
+  status      AttendanceStatus @default(present)
+  captured_at DateTime         @default(now())
+  device_id   String?          @db.VarChar(255)
+  latitude    Decimal?         @db.Decimal(10, 8)
+  longitude   Decimal?         @db.Decimal(11, 8)
+
+  session Session @relation(fields: [session_id], references: [id], onDelete: Cascade)
+  student User    @relation(fields: [student_id], references: [id], onDelete: Cascade)
+
+  @@map("attendance")
+}
+
+model Poll {
+  id         Int      @id @default(autoincrement())
+  course_id  Int
+  teacher_id Int
+  question   String   @db.Text
+  type       PollType @default(poll)
+  is_active  Boolean  @default(true)
+  created_at DateTime @default(now())
+
+  course    Course         @relation(fields: [course_id], references: [id], onDelete: Cascade)
+  teacher   User           @relation(fields: [teacher_id], references: [id], onDelete: Cascade)
+  options   PollOption[]
+  responses PollResponse[]
+
+  @@map("polls")
+}
+
+model PollOption {
+  id          Int     @id @default(autoincrement())
+  poll_id     Int
+  option_text String  @db.VarChar(255)
+  is_correct  Boolean @default(false)
+
+  poll Poll @relation(fields: [poll_id], references: [id], onDelete: Cascade)
+
+  @@map("poll_options")
+}
+
+model PollResponse {
+  id                 Int      @id @default(autoincrement())
+  poll_id            Int
+  student_id         Int
+  selected_option_id Int?
+  response_text      String?  @db.Text
+  latitude           Decimal? @db.Decimal(10, 8)
+  longitude          Decimal? @db.Decimal(11, 8)
+  responded_at       DateTime @default(now())
+
+  poll    Poll @relation(fields: [poll_id], references: [id], onDelete: Cascade)
+  student User @relation(fields: [student_id], references: [id], onDelete: Cascade)
+
+  @@map("poll_responses")
+}
+
+model EngagementScore {
+  id                 Int      @id @default(autoincrement())
+  course_id          Int
+  student_id         Int
+  score              Int      @default(100)
+  attendance_rate    Decimal? @default(0.00) @db.Decimal(5, 2)
+  participation_rate Decimal? @default(0.00) @db.Decimal(5, 2)
+  last_updated       DateTime @default(now()) @updatedAt
+
+  course  Course @relation(fields: [course_id], references: [id], onDelete: Cascade)
+  student User   @relation(fields: [student_id], references: [id], onDelete: Cascade)
+
+  @@unique([course_id, student_id])
+  @@map("engagement_scores")
+}
