@@ -28,11 +28,33 @@ function updateNavSlider(activeBtn) {
     }
 }
 
-// Initialize Slider
+// Initialize Slider and check for active session
 document.addEventListener('DOMContentLoaded', () => {
     const activeBtn = document.querySelector('.nav-tab.active');
     if (activeBtn) updateNavSlider(activeBtn);
+
+    // Check for active session on page load (for refresh persistence)
+    checkActiveSession();
 });
+
+// Check and restore active session on page load
+async function checkActiveSession() {
+    try {
+        const res = await fetch(`${API_URL}/attendance/active`, { headers: getHeaders() });
+        const session = await res.json();
+
+        if (session && session.id) {
+            console.log('[SESSION] Restoring active session:', session.id);
+            currentSessionId = session.id;
+            const courseName = session.course?.course_name || 'Active Session';
+            showSessionOverlay(courseName, session.session_token, session.pin);
+            // Initial poll
+            pollAttendance();
+        }
+    } catch (err) {
+        console.log('[SESSION] No active session or error:', err.message);
+    }
+}
 
 // Engagement Sub-Tab Switching
 function switchEngagementTab(tabId) {
@@ -218,17 +240,51 @@ function showSessionOverlay(courseName, token, pin) {
     }, 1000);
 }
 
-function closeSessionView() {
-    if (confirm('Are you sure you want to end this session?')) {
-        // Clear Intervals
-        clearInterval(rotationInterval);
-        clearInterval(pollingInterval);
-        clearInterval(timerInterval);
+// Quit: Just hide overlay, keep session active (teacher can reopen)
+function quitSessionView() {
+    // Clear Intervals (stop polling while not viewing)
+    clearInterval(rotationInterval);
+    clearInterval(pollingInterval);
+    clearInterval(timerInterval);
 
-        // Hide UI
-        document.getElementById('live-session-overlay').classList.add('hidden');
-        loadDashboardStats(); // Refresh stats
+    // Hide UI
+    document.getElementById('live-session-overlay').classList.add('hidden');
+    // Note: currentSessionId is NOT cleared - session stays active in DB
+}
+
+// End Session: Deactivate in database and clear everything
+async function endSession() {
+    if (!confirm('End this session? Students will no longer be able to mark attendance.')) {
+        return;
     }
+
+    try {
+        // Call API to deactivate session in database
+        await fetch(`${API_URL}/attendance/session/${currentSessionId}/end`, {
+            method: 'POST',
+            headers: getHeaders()
+        });
+        console.log('[SESSION] Session ended successfully');
+    } catch (err) {
+        console.error('[SESSION] Error ending session:', err);
+    }
+
+    // Clear Intervals
+    clearInterval(rotationInterval);
+    clearInterval(pollingInterval);
+    clearInterval(timerInterval);
+
+    // Clear session ID
+    currentSessionId = null;
+
+    // Hide UI
+    document.getElementById('live-session-overlay').classList.add('hidden');
+    loadDashboardStats(); // Refresh stats
+}
+
+// Legacy function for backwards compatibility
+function closeSessionView() {
+    endSession();
 }
 
 // Helper: Rotation Logic

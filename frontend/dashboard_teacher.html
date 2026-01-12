@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    
+
     <header>
         <div class="nav-brand">Attendsy</div>
 
@@ -39,9 +39,9 @@
         </div>
     </header>
 
-    
+
     <main>
-        
+
         <section id="tab-overview" class="tab-content">
             <div style="margin-bottom: 2rem; margin-top: 1rem;">
                 <h1 style="font-size: 3rem; font-weight: 400; color: #111111; letter-spacing: -1.5px; margin: 0;">
@@ -49,7 +49,7 @@
                 </h1>
             </div>
             <div class="dashboard-overview">
-                
+
                 <div class="glass-card">
                     <div class="flex-between mb-4">
                         <h3>My Courses</h3>
@@ -60,7 +60,7 @@
                     </div>
                 </div>
 
-                
+
                 <div class="metrics-grid">
                     <div class="glass-card metric-card">
                         <div class="metric-icon">
@@ -97,7 +97,7 @@
                     </div>
                     <div class="glass-card metric-card metric-card-clickable" onclick="openAtRiskModal()" id="card-risk"
                         style="position: relative; overflow: visible;">
-                        
+
                         <div id="risk-badge" class="risk-badge hidden">HIGH RISK</div>
 
                         <div class="metric-icon warning">
@@ -116,7 +116,7 @@
 
                         <div class="flex-start items-baseline gap-2">
                             <span class="metric-value gradient-text-error" id="metric-risk">--</span>
-                            
+
                             <span class="metric-trend negative" id="risk-trend">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="3">
@@ -127,23 +127,23 @@
                             </span>
                         </div>
 
-                        
+
                         <div class="progress-track">
                             <div class="progress-fill" id="risk-progress-bar" style="width: 0%"></div>
                         </div>
 
-                        
+
                         <div class="flex-between mt-2 text-xs">
                             <span class="text-muted">Students at risk</span>
                             <span class="font-bold" id="risk-breakdown" style="color: var(--text-primary);">-- High, --
                                 Med</span>
                         </div>
 
-                        
+
                         <div class="hover-preview-tooltip hidden" id="risk-preview-tooltip">
                             <div class="tooltip-header">Top 3 At Risk</div>
                             <ul class="tooltip-list" id="risk-preview-list">
-                                
+
                             </ul>
                         </div>
                     </div>
@@ -163,7 +163,7 @@
                 </div>
             </div>
 
-            
+
             <div class="glass-card">
                 <h3>Create New Course</h3>
                 <form onsubmit="createCourse(event)"
@@ -185,14 +185,14 @@
             </div>
         </section>
 
-        
+
         <section id="tab-sessions" class="tab-content hidden" style="display: none;">
-            
+
         </section>
 
-        
+
         <section id="tab-students" class="tab-content hidden">
-            
+
             <div class="control-bar glass-card mb-4 flex-between">
                 <div class="flex-align-center gap-2">
                     <div class="dropdown-filter">
@@ -214,7 +214,7 @@
                 </div>
             </div>
 
-            
+
             <div class="glass-card table-container">
                 <table class="data-table" id="students-table">
                     <thead>
@@ -229,7 +229,7 @@
                         </tr>
                     </thead>
                     <tbody id="student-directory-body">
-                        
+
                         <tr>
                             <td colspan="7" class="text-center p-4 text-muted">Loading directory...</td>
                         </tr>
@@ -238,7 +238,7 @@
             </div>
         </section>
 
-        
+
         <div id="add-student-modal" class="modal-overlay hidden">
             <div class="glass-card modal-content">
                 <h3 class="mb-4">Add New Student</h3>
@@ -259,7 +259,7 @@
             </div>
         </div>
 
-        
+
         <div id="at-risk-modal" class="modal-overlay hidden">
             <div class="glass-card modal-content at-risk-modal">
                 <div class="modal-header flex-between mb-4">
@@ -283,7 +283,7 @@
                     </button>
                 </div>
 
-                
+
                 <div class="risk-summary mb-4">
                     <div class="risk-stat risk-high">
                         <span class="risk-count" id="risk-high-count">0</span>
@@ -312,31 +312,31 @@
                     </button>
                 </div>
 
-                
+
                 <div class="at-risk-list" id="at-risk-list">
                     <div class="text-center text-muted p-4">Loading at-risk students...</div>
                 </div>
 
-                
+
                 <div class="modal-footer mt-4 flex-end gap-2">
                     <button class="btn btn-secondary" onclick="closeAtRiskModal()">Close</button>
                 </div>
             </div>
         </div>
 
-        
+
         <section id="tab-engagement" class="tab-content hidden">
             <div class="glass-card">
                 <h3 class="mb-4">Engagement Tools</h3>
 
-                
+
                 <div class="tab-container">
                     <button class="tab-btn active" onclick="switchEngagementTab('polls')">Polls</button>
                     <button class="tab-btn" onclick="switchEngagementTab('quizzes')">Quizzes</button>
                     <button class="tab-btn" onclick="switchEngagementTab('resources')">Resources</button>
                 </div>
 
-                
+
                 <div id="engagement-polls" class="engagement-panel">
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
                         <div>
@@ -369,14 +369,14 @@
                                 <p>No active poll</p>
                                 <p class="text-xs mt-2">Create and launch a poll to see live results here</p>
                             </div>
-                            
+
                             <button id="stop-poll-btn" class="btn btn-secondary w-full hidden mt-3"
                                 onclick="stopPoll()">Stop Session</button>
                         </div>
                     </div>
                 </div>
 
-                
+
                 <div id="engagement-quizzes" class="engagement-panel hidden">
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
                         <div>
@@ -424,7 +424,7 @@
                     </div>
                 </div>
 
-                
+
                 <div id="engagement-resources" class="engagement-panel hidden">
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
                         <div>
@@ -467,10 +467,10 @@
             </div>
         </section>
 
-        
+
         <section id="tab-analytics" class="tab-content hidden">
             <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem;">
-                
+
                 <div class="glass-card">
                     <div class="flex-between mb-4">
                         <h3>Attendance Trends</h3>
@@ -495,7 +495,7 @@
                     </div>
                 </div>
 
-                
+
                 <div class="glass-card dark">
                     <h3 class="mb-4">Quick Stats</h3>
                     <div class="mb-4">
@@ -530,7 +530,7 @@
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
-                
+
                 <div class="glass-card">
                     <h3 class="mb-4">Attendance Heatmap</h3>
                     <div
@@ -551,7 +551,7 @@
                     </div>
                 </div>
 
-                
+
                 <div class="glass-card">
                     <h3 class="mb-4">Status Distribution</h3>
                     <div
@@ -573,7 +573,7 @@
         </section>
     </main>
 
-    
+
     <div id="live-session-overlay" class="hidden">
         <header class="glass-card live-header">
             <div class="header-left">
@@ -583,13 +583,16 @@
             <div class="header-center">
                 <h1 id="live-clock">09:41 AM</h1>
             </div>
-            <div class="header-right">
-                <button class="btn btn-secondary" onclick="closeSessionView()">End Session</button>
+            <div class="header-right" style="display: flex; gap: 8px;">
+                <button class="btn btn-ghost" onclick="quitSessionView()"
+                    title="Close overlay (session continues)">Quit</button>
+                <button class="btn btn-secondary" onclick="endSession()" title="End session permanently">End
+                    Session</button>
             </div>
         </header>
 
         <main class="live-grid">
-            
+
             <div class="access-panel glass-card">
                 <div class="access-toggles">
                     <button class="toggle-btn active" onclick="setAccessMode('qr')">QR</button>
@@ -612,7 +615,7 @@
                 <p class="text-xs text-muted mt-2">QR rotates in <span id="timer-count">30</span>s</p>
             </div>
 
-            
+
             <div class="list-panel">
                 <div class="list-header flex-between">
                     <h3>Live Attendance</h3>
@@ -629,7 +632,7 @@
                 </div>
 
                 <div id="live-student-list" class="live-list-scroll">
-                    
+
                 </div>
             </div>
         </main>

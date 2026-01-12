@@ -47,12 +47,45 @@ router.post('/start', verifyToken, verifyRole('teacher'), async (req, res) => {
                 latitude,
                 longitude,
                 radius_meters: radius || 50,
-                expires_at: new Date(Date.now() + 10 * 60000) // +10 minutes
+                expires_at: new Date(Date.now() + 60 * 60000) // +60 minutes (extended)
             }
         });
 
         res.json({ session_id: session.id, session_token, pin, message: 'Session started.' });
     } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// GET active session for teacher (for restoring on page refresh)
+router.get('/active', verifyToken, verifyRole('teacher'), async (req, res) => {
+    try {
+        const session = await prisma.session.findFirst({
+            where: {
+                is_active: true,
+                course: { teacher_id: req.user.id }
+            },
+            include: {
+                course: { select: { course_name: true } }
+            }
+        });
+        res.json(session);
+    } catch (err) {
+        console.error('[ACTIVE] Error:', err.message);
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// POST end session (deactivate in database)
+router.post('/session/:sessionId/end', verifyToken, verifyRole('teacher'), async (req, res) => {
+    try {
+        await prisma.session.update({
+            where: { id: parseInt(req.params.sessionId) },
+            data: { is_active: false }
+        });
+        res.json({ message: 'Session ended successfully' });
+    } catch (err) {
+        console.error('[END] Error:', err.message);
         res.status(500).json({ error: err.message });
     }
 });
