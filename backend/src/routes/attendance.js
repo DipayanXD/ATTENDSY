@@ -106,40 +106,85 @@ router.post('/session/:sessionId/rotate', verifyToken, verifyRole('teacher'), as
     }
 });
 
-// 6. Get Live Session Data (Teacher)
+// 6. Get Live Session Data (Teacher) - REWRITTEN with Prisma typed queries
 router.get('/session/:sessionId/live', verifyToken, verifyRole('teacher'), async (req, res) => {
     const { sessionId } = req.params;
+    console.log('[LIVE] ========================================');
     console.log('[LIVE] Fetching live data for session:', sessionId);
+
     try {
-        // Using raw query for complex join logic to maintain behavior
-        // Prisma's type-safe joins are great but replacing this specific report query 
-        // with 3-way join + CASE statement is simpler via raw SQL for migration.
-        const students = await prisma.$queryRaw`
-            SELECT u.full_name, u.id,
-                    CASE 
-                        WHEN a.status IS NOT NULL THEN a.status::text
-                        ELSE 'absent'
-                    END as status,
-                    a.captured_at
-             FROM users u
-             JOIN enrollments e ON u.id = e.student_id
-             JOIN sessions s ON e.course_id = s.course_id
-             LEFT JOIN attendance a ON s.id = a.session_id AND u.id = a.student_id
-             WHERE s.id = ${parseInt(sessionId)}
-             ORDER BY status DESC, u.full_name ASC
-        `;
+        // Step 1: Get the session to find the course_id
+        const session = await prisma.session.findUnique({
+            where: { id: parseInt(sessionId) },
+            select: { id: true, course_id: true, is_active: true }
+        });
 
-        console.log('[LIVE] Query returned', students.length, 'students');
+        if (!session) {
+            console.log('[LIVE] Session not found!');
+            return res.status(404).json({ error: 'Session not found' });
+        }
+        console.log('[LIVE] Session found:', session);
 
-        // Convert BigInts and ensure proper serialization
-        const formatted = students.map(s => ({
-            ...s,
-            id: Number(s.id),
-            captured_at: s.captured_at
-        }));
-        res.json(formatted);
+        // Step 2: Get all students enrolled in this course
+        const enrollments = await prisma.enrollment.findMany({
+            where: { course_id: session.course_id },
+            include: {
+                student: {
+                    select: { id: true, full_name: true, email: true }
+                }
+            }
+        });
+        console.log('[LIVE] Enrollments found:', enrollments.length);
+
+        if (enrollments.length === 0) {
+            console.log('[LIVE] WARNING: No students enrolled in course', session.course_id);
+            return res.json([]); // No enrolled students
+        }
+
+        // Step 3: Get all attendance records for this session
+        const attendanceRecords = await prisma.attendance.findMany({
+            where: { session_id: session.id },
+            select: { student_id: true, status: true, captured_at: true }
+        });
+        console.log('[LIVE] Attendance records found:', attendanceRecords.length);
+
+        // Step 4: Create a map for quick lookup
+        const attendanceMap = new Map();
+        attendanceRecords.forEach(record => {
+            attendanceMap.set(record.student_id, {
+                status: record.status,
+                captured_at: record.captured_at
+            });
+        });
+
+        // Step 5: Merge enrollments with attendance
+        const students = enrollments.map(enrollment => {
+            const attendance = attendanceMap.get(enrollment.student_id);
+            return {
+                id: enrollment.student_id,
+                full_name: enrollment.student.full_name,
+                email: enrollment.student.email,
+                status: attendance ? attendance.status : 'absent',
+                captured_at: attendance ? attendance.captured_at : null
+            };
+        });
+
+        // Step 6: Sort - present/late first, then absent, then by name
+        students.sort((a, b) => {
+            if (a.status === 'present' && b.status !== 'present') return -1;
+            if (a.status !== 'present' && b.status === 'present') return 1;
+            if (a.status === 'late' && b.status === 'absent') return -1;
+            if (a.status === 'absent' && b.status === 'late') return 1;
+            return a.full_name.localeCompare(b.full_name);
+        });
+
+        console.log('[LIVE] Returning', students.length, 'students');
+        console.log('[LIVE] Present count:', students.filter(s => s.status === 'present').length);
+        console.log('[LIVE] ========================================');
+
+        res.json(students);
     } catch (err) {
-        console.error('[LIVE] Error:', err.message);
+        console.error('[LIVE] ERROR:', err);
         res.status(500).json({ error: err.message });
     }
 });
