@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const db = require('./config/db');
+const prisma = require('./config/prisma');
 
 // Routes
 const authRoutes = require('./routes/auth');
@@ -21,14 +21,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Test DB Connection
-db.getConnection()
-    .then(connection => {
-        console.log('Database connected successfully');
-        connection.release();
-    })
-    .catch(err => {
+async function checkConnection() {
+    try {
+        await prisma.$connect();
+        console.log('Database connected successfully via Prisma');
+    } catch (err) {
         console.error('Database connection failed:', err);
-    });
+    }
+}
+checkConnection();
 
 // API Routes
 app.use('/api/auth', authRoutes);
