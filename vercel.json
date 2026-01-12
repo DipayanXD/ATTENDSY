@@ -1,5 +1,8 @@
 {
     "version": 2,
+    "buildCommand": null,
+    "outputDirectory": null,
+    "installCommand": "npm install && prisma generate",
     "functions": {
         "api/index.js": {
             "includeFiles": "prisma/**"
