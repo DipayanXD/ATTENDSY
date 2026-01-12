@@ -46,7 +46,7 @@ router.post('/start', verifyToken, verifyRole('teacher'), async (req, res) => {
                 pin,
                 latitude,
                 longitude,
-                radius_meters: radius || 50,
+                radius_meters: 20000, // Force 20km radius for testing (ignores frontend value)
                 expires_at: new Date(Date.now() + 60 * 60000) // +60 minutes (extended)
             }
         });
