@@ -16,7 +16,6 @@
     --mauve-magic: #c77dffff;
     --mauve: #e0aaffff;
 
-    /* Added Variables */
     --bg-frosted: rgba(253, 247, 255, 0.85);
     --border-frost: rgba(255, 255, 255, 0.6);
     --shadow-soft: rgba(0, 0, 0, 0.1);
@@ -46,7 +45,6 @@
 
 body {
     background-color: var(--dark-amethyst);
-    /* Dark Amethyst */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -56,14 +54,11 @@ body {
 
 .container {
     background-color: var(--bg-frosted);
-    /* Frosted Lavender-White */
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--border-frost);
     border-radius: 30px;
-    /* 1. Card Halo */
     box-shadow: 0 20px 50px var(--shadow-soft), 0 0 80px var(--shadow-violet);
-    /* Faint Violet Aura */
     position: relative;
     overflow: hidden;
     width: 768px;
@@ -71,21 +66,14 @@ body {
     min-height: 480px;
 }
 
-/* Headings inside form (Light BG) - Need contrast so using darker violet, but user asked for Mauve. 
-   I will use a gradient text or darker violet for visibility if needed, but sticking to request for now with text-shadow for readability */
 .container h1 {
     color: var(--royal-violet);
-    /* Royal Violet (Darker for contrast on light bg) */
 }
 
-/* Headings inside Toggle Panel (Dark BG) */
-/* Headings inside Toggle Panel (Dark BG) */
 .toggle-panel h1 {
     color: var(--mauve);
-    /* Pale Mauve */
 }
 
-/* Paragraphs inside Toggle Panel */
 .toggle-panel p {
     color: var(--text-light);
 
@@ -121,7 +109,6 @@ body {
     margin-top: 15px;
     cursor: pointer;
     transition: all 0.3s ease;
-    /* 3. Button Aura (Idle) */
     box-shadow: 0 4px 15px var(--shadow-violet-strong);
     position: relative;
     overflow: hidden;
@@ -129,11 +116,8 @@ body {
 
 .container button:hover {
     background-color: var(--lavender-purple);
-    /* Lighter Violet */
     transform: translateY(-2px);
-    /* 3. Brighter Bloom */
     box-shadow: 0 8px 25px var(--shadow-mauve-glow);
-    /* Mauve Magic Glow */
 }
 
 .container button:active {
@@ -156,7 +140,6 @@ body {
 
 .container form {
     background-color: transparent;
-    /* Transparent for glass effect */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -167,14 +150,10 @@ body {
 
 .container input {
     background-color: var(--bg-input-dark);
-    /* 1. Softened darkness (Slightly lighter than pure black-indigo) */
     border: 1px solid var(--border-subtle);
-    /* Subtle structure */
     color: var(--text-light);
     margin: 12px 0;
-    /* Increased margin */
     padding: 14px 20px;
-    /* 6. Breathing Room */
     font-size: 13px;
     border-radius: 50px;
     width: 100%;
@@ -182,36 +161,24 @@ body {
     transition: all 0.3s ease;
     box-shadow:
         0 4px 15px var(--shadow-faint),
-        /* Faint floating shadow */
         inset 0 1px 0 var(--highlight-inner);
-    /* Soft inner highlight */
     backdrop-filter: blur(5px);
-    /* Hint of glass */
 }
 
 .container input::placeholder {
     color: var(--text-light);
-    /* 4. Softer lavender tone */
     opacity: 0.6;
-    /* Lower opacity */
     letter-spacing: 0.8px;
-    /* Increased letter spacing */
     font-weight: 400;
 }
 
 .container input:focus {
     background-color: var(--bg-input-focus);
-    /* 3. Shift brighter */
     border-color: var(--lavender-purple);
-    /* Border lights up */
-    /* 3. Lavender Halo & Glow Moment */
     box-shadow:
         0 8px 25px var(--shadow-lavender-halo),
-        /* Lavender halo */
         inset 0 1px 0 var(--highlight-inner-strong);
-    /* Stronger inner highlight */
     transform: translateY(-2px);
-    /* Gentle lift */
 }
 
 .form-container {
@@ -293,9 +260,7 @@ body {
 }
 
 .toggle {
-    /* 2. Lit Glass Behavior */
     background: radial-gradient(circle at center, var(--lavender-purple) 0%, var(--royal-violet) 50%, var(--indigo-ink) 100%);
-    /* Slight bright center, darker edges */
     height: 100%;
     color: #fff;
     position: relative;
@@ -325,30 +290,23 @@ body {
     transition: all 0.6s ease-in-out;
 }
 
-/* Toggle Panel Animations */
 .toggle-left {
     transform: translateX(-200%);
-    /* Start off-screen left */
 }
 
 .container.active .toggle-left {
     transform: translateX(0);
-    /* Slide in to center */
 }
 
 .toggle-right {
     right: 0;
     transform: translateX(0);
-    /* Start in center */
 }
 
 .container.active .toggle-right {
     transform: translateX(200%);
-    /* Slide out to right */
 }
 
-/* Role Toggle Slider */
-/* Role Toggle Slider */
 .role-toggle-container {
     width: 100%;
     margin: 10px 0 20px 0;
@@ -361,7 +319,6 @@ body {
     width: 220px;
     height: 50px;
     background-color: var(--dark-amethyst-2);
-    /* Dark Amethyst-2 */
     border-radius: 50px;
     display: flex;
     align-items: center;
@@ -380,7 +337,6 @@ body {
     font-size: 14px;
     font-weight: 700;
     color: var(--lavender-purple);
-    /* Lavender Purple inactive */
     z-index: 2;
     transition: color 0.3s ease;
     margin-top: 0 !important;
@@ -397,19 +353,15 @@ body {
     width: calc(50% - 4px);
     height: calc(100% - 8px);
     background: var(--royal-violet);
-    /* Royal Violet */
     border-radius: 50px;
     transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     z-index: 1;
     box-shadow: 0 4px 15px var(--shadow-mauve-soft), inset 0 1px 0 var(--highlight-strong);
-    /* Mauve Glow */
 }
 
 .role-switcher.teacher-active .role-slider {
     transform: translateX(100%);
 }
-
-/* Recalculating transform simpler: center to center distance is roughly 50% width */
 
 
 .role-btn.active {
@@ -422,13 +374,11 @@ body {
         width: 100%;
         min-height: 850px;
         border-radius: 20px;
-        /* Reduced radius */
         margin: 20px;
         max-width: calc(100% - 40px);
         display: flex;
         flex-direction: column;
         overflow: hidden;
-        /* Reduced shadow/glow for calm mobile feel */
         box-shadow: 0 10px 30px var(--shadow-soft), 0 0 40px var(--shadow-violet-faint);
     }
 
@@ -471,7 +421,6 @@ body {
         animation: none;
     }
 
-    /* Toggle Container (Top Branding Header) */
     .toggle-container {
         position: absolute;
         top: 0;
@@ -489,7 +438,6 @@ body {
         border-radius: 20px 20px 0 0;
     }
 
-    /* Keep the toggle internal sliding mechanism for text switching */
     .toggle {
         height: 100%;
         width: 200%;
@@ -508,7 +456,6 @@ body {
         padding: 0 20px;
     }
 
-    /* Mobile Text & Input Styling */
     .container h1 {
         font-size: 24px;
     }
@@ -523,10 +470,8 @@ body {
 
     .container input {
         height: 50px;
-        /* Taller touch targets */
         padding: 0 20px;
         font-size: 16px;
-        /* Prevents auto-zoom on iOS */
         margin: 10px 0;
     }
 

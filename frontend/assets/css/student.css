@@ -1,21 +1,18 @@
-/* 
-  Student Dashboard Mobile-First Styles 
-  Design: Clean, Modern, "AttendSy"
-*/
+
 
 :root {
-    /* Brand Colors (Crextio/Royal Violet Palette) */
+    
     --royal-violet: #7b2cbf;
     --indigo-velvet: #5a189a;
     --mauve-magic: #c77dff;
     --accent-gold: #ffb703;
-    /* For Engagement/Star */
+    
 
     --primary-gradient: linear-gradient(135deg, var(--royal-violet) 0%, var(--indigo-velvet) 100%);
     --glass-surface: rgba(255, 255, 255, 0.9);
     --glass-border: 1px solid rgba(255, 255, 255, 0.5);
 
-    /* Status Colors */
+    
     --success-color: #10B981;
     --warning-color: #F59E0B;
     --danger-color: #EF4444;
@@ -23,23 +20,23 @@
     --text-muted: #6B7280;
     --text-accent: var(--royal-violet);
 
-    /* Backgrounds */
+    
     --bg-body: #F3F4F6;
-    /* Slightly darker to make white cards pop */
+    
     --bg-card: #FFFFFF;
 
-    /* Shadows */
+    
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     --shadow-glow: 0 0 20px rgba(123, 44, 191, 0.15);
 
-    /* Layout */
+    
     --radius-lg: 20px;
     --radius-md: 16px;
     --header-height: 70px;
     --nav-height: 80px;
-    /* Taller for labels */
+    
     --fab-size: 60px;
 }
 
@@ -55,10 +52,10 @@ body {
     background-color: var(--bg-body);
     color: var(--text-dark);
     padding-bottom: calc(var(--nav-height) + 40px);
-    /* Increased space for bottom scrolling */
+    
 }
 
-/* --- Typography --- */
+
 h1,
 h2,
 h3,
@@ -87,9 +84,9 @@ h4 {
     color: var(--text-muted);
 }
 
-/* --- Components --- */
 
-/* 1. Cards (Solid White, No Glass) */
+
+
 .card {
     background: var(--bg-card);
     border-radius: var(--radius-lg);
@@ -104,7 +101,7 @@ h4 {
     transform: scale(0.98);
 }
 
-/* 2. Header */
+
 header {
     padding: 20px 24px 10px;
     display: flex;
@@ -131,7 +128,7 @@ header {
     box-shadow: 0 2px 8px rgba(124, 58, 237, 0.2);
 }
 
-/* 3. Quick Stats Grid */
+
 .stats-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -149,7 +146,7 @@ header {
     flex-direction: column;
     justify-content: space-between;
     height: 130px;
-    /* Taller */
+    
     position: relative;
     overflow: hidden;
     border: 1px solid rgba(0, 0, 0, 0.03);
@@ -172,7 +169,7 @@ header {
 
 .stat-value {
     font-size: 2rem;
-    /* Larger */
+    
     font-weight: 800;
     line-height: 1;
     margin-bottom: 4px;
@@ -185,7 +182,7 @@ header {
     font-weight: 600;
 }
 
-/* Specific Stat Styles (Using new palette) */
+
 .stat-card.blue .stat-icon-wrapper {
     background: #E0F2FE;
     color: #0284C7;
@@ -204,15 +201,15 @@ header {
 .stat-card.gold .stat-icon-wrapper {
     background: #FEF3C7;
     color: var(--accent-gold);
-    /* Using gold for engagement */
+    
 }
 
 .stat-card.gold .stat-value {
     color: #D97706;
-    /* Darker gold text */
+    
 }
 
-/* --- Up Next Banner --- */
+
 .up-next-card {
     background: var(--primary-gradient);
     border-radius: var(--radius-lg);
@@ -288,7 +285,7 @@ header {
     transform: scale(0.98);
 }
 
-/* 4. Horizontal Scroll Section (Courses) */
+
 .section-header {
     padding: 0 24px;
     margin-bottom: 12px;
@@ -302,7 +299,7 @@ header {
     overflow-x: auto;
     gap: 16px;
     padding: 4px 24px 24px;
-    /* Bottom padding for shadow */
+    
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
 }
@@ -313,18 +310,18 @@ header {
 
 .course-card {
     min-width: 280px;
-    /* Wider */
+    
     scroll-snap-align: center;
     background: white;
     border-radius: 24px;
     padding: 24px;
     box-shadow: var(--shadow-md);
     position: relative;
-    /* Bold borders */
+    
     border: 1px solid rgba(0, 0, 0, 0.05);
     border-top: 6px solid;
-    /* Move color to top or keep left */
-    /* Dynamic Color applied to border-top */
+    
+    
 }
 
 .course-card .progress-container {
@@ -338,7 +335,7 @@ header {
 .course-card .progress-bar {
     height: 100%;
     border-radius: 4px;
-    /* width set via JS */
+    
 }
 
 .course-header {
@@ -387,7 +384,7 @@ header {
     font-weight: bold;
 }
 
-/* 5. Bottom Navigation */
+
 .bottom-nav {
     position: fixed;
     bottom: 20px;
@@ -395,13 +392,13 @@ header {
     right: 20px;
     height: var(--nav-height);
     background: #1e1e23;
-    /* Dark background */
+    
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-radius: 40px;
     display: flex;
     justify-content: space-between;
-    /* Even spacing */
+    
     align-items: center;
     padding: 0 16px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
@@ -419,46 +416,46 @@ header {
     width: 60px;
     height: 100%;
     gap: 6px;
-    /* Increased Spacing */
+    
     cursor: pointer;
     position: relative;
     z-index: 2;
-    /* Above slider */
+    
 }
 
-/* Slider (Login-like Toggle) */
+
 .nav-slider {
     position: absolute;
     top: 50%;
     margin-top: -32px;
-    /* Vertically centered (64px height / 2) */
+    
     left: 16px;
     width: 64px;
-    /* Match item width */
+    
     height: 64px;
-    /* Squircle */
+    
     background: #ffffff;
-    /* White Circle as per ref */
+    
     border-radius: 50%;
-    /* Back to Circle for "as shown images" */
+    
     z-index: 1;
     transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
     opacity: 0;
 }
 
-/* Active State: Filled/Glow */
+
 .nav-item.active {
     color: var(--royal-violet);
-    /* Dark/Brand color on white */
+    
     font-weight: 700;
 }
 
-/* Ensure SVG doesn't fill weirdly on white background */
+
 .nav-item.active svg {
     fill: none;
     stroke: currentColor;
-    /* Matches text color */
+    
     stroke-width: 2.5px;
 }
 
@@ -470,26 +467,26 @@ header {
 
 .nav-label {
     display: none;
-    /* User requested removing all text */
+    
 }
 
-/* 6. Primary Action (Scan) - Integrated */
+
 .nav-item-primary {
     color: white !important;
-    /* Always white */
+    
     margin-top: -45px;
-    /* Significant lift for floating effect */
+    
     justify-content: center;
     position: relative;
     z-index: 10;
-    /* Above everything */
+    
 }
 
 .nav-icon-primary {
     width: 72px;
-    /* Bigger */
+    
     height: 72px;
-    /* Bigger */
+    
     background: var(--primary-gradient);
     border-radius: 50%;
     display: flex;
@@ -497,7 +494,7 @@ header {
     justify-content: center;
     box-shadow: 0 8px 25px rgba(124, 58, 237, 0.6);
     border: 6px solid #1e1e23;
-    /* Thicker cutout border */
+    
     transition: transform 0.2s;
     margin-bottom: 0;
 }
@@ -513,7 +510,7 @@ header {
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-/* 7. QR Scanner Modal */
+
 .scanner-modal {
     position: fixed;
     top: 0;
@@ -553,7 +550,7 @@ header {
     border-radius: 0 !important;
 }
 
-/* Viewfinder Overlay */
+
 .scan-overlay {
     position: absolute;
     top: 50%;
@@ -639,7 +636,7 @@ header {
     color: white;
 }
 
-/* Views & Animation */
+
 .view-section {
     display: none;
     animation: fadeIn 0.3s ease;
@@ -661,7 +658,7 @@ header {
     }
 }
 
-/* Calendar Tweaks */
+
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -704,7 +701,7 @@ header {
     border-radius: 50%;
 }
 
-/* Helpers */
+
 .hidden {
     display: none !important;
 }

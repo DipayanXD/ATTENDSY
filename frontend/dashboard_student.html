@@ -5,19 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AttendSy - Student</title>
-    <!-- Fonts -->
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Styles -->
+    
     <link rel="stylesheet" href="assets/css/student.css">
-    <!-- QR Library -->
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
 </head>
 
 <body>
 
-    <!-- 1. Header (Sticky Top logic can be added if needed, currently static) -->
+    
     <header>
         <div class="user-greeting">
             <div class="text-sm text-muted">Good Morning,</div>
@@ -29,12 +29,12 @@
     </header>
 
     <main>
-        <!-- ======================= VIEW: HOME ======================= -->
+        
         <div id="view-home" class="view-section active">
 
-            <!-- 1. Quick Stats Row -->
+            
             <div class="stats-grid">
-                <!-- Total Classes -->
+                
                 <div class="stat-card blue">
                     <div class="stat-icon-wrapper">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -49,7 +49,7 @@
                     </div>
                 </div>
 
-                <!-- Attendance -->
+                
                 <div class="stat-card green">
                     <div class="stat-icon-wrapper">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -64,7 +64,7 @@
                     </div>
                 </div>
 
-                <!-- Missed -->
+                
                 <div class="stat-card red">
                     <div class="stat-icon-wrapper">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -80,7 +80,7 @@
                     </div>
                 </div>
 
-                <!-- Engagement -->
+                
                 <div class="stat-card gold">
                     <div class="stat-icon-wrapper">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -97,12 +97,12 @@
                 </div>
             </div>
 
-            <!-- 2. Up Next Banner (New Feature) -->
+            
             <div id="up-next-container" style="padding: 0 20px; margin-bottom: 24px;">
-                <!-- Injected via JS -->
+                
             </div>
 
-            <!-- 3. My Courses -->
+            
             <div class="section-header">
                 <h3>My Courses</h3>
                 <span class="text-sm text-accent" onclick="switchView('courses')">View All</span>
@@ -113,27 +113,27 @@
                 </div>
             </div>
 
-            <!-- 4. Recent Activity -->
+            
             <div class="section-header" style="margin-top: 28px;">
                 <h3>Recent Activity</h3>
             </div>
             <div style="padding: 0 20px;" id="home-activity-list">
-                <!-- Injected JS -->
+                
             </div>
 
         </div>
 
-        <!-- ======================= VIEW: COURSES ======================= -->
+        
         <div id="view-courses" class="view-section">
             <div style="padding: 0 20px;">
                 <h2 style="margin-bottom: 20px;">All Courses</h2>
                 <div id="courses-full-list">
-                    <!-- Vertical List of Courses -->
+                    
                 </div>
             </div>
         </div>
 
-        <!-- ======================= VIEW: CALENDAR ======================= -->
+        
         <div id="view-calendar" class="view-section">
             <div style="padding: 0 20px;">
                 <div class="card">
@@ -158,7 +158,7 @@
             </div>
         </div>
 
-        <!-- ======================= VIEW: NOTIFICATIONS ======================= -->
+        
         <div id="view-notifications" class="view-section">
             <div style="padding: 0 20px;">
                 <h2 style="margin-bottom: 20px;">Notifications</h2>
@@ -166,7 +166,7 @@
             </div>
         </div>
 
-        <!-- ======================= VIEW: PROFILE ======================= -->
+        
         <div id="view-profile" class="view-section">
             <div style="padding: 0 20px; text-align: center; margin-top: 20px;">
                 <div
@@ -189,7 +189,7 @@
 
     </main>
 
-    <!-- Bottom Navigation (Unified & Flat) -->
+    
     <nav class="bottom-nav">
         <div class="nav-slider"></div>
         <div class="nav-item active" onclick="switchView('home')" id="nav-home">
@@ -210,7 +210,7 @@
             <span class="nav-label">Courses</span>
         </div>
 
-        <!-- Center Action: Scan -->
+        
         <div class="nav-item nav-item-primary" onclick="openScanner()">
             <div class="nav-icon-primary">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -249,9 +249,9 @@
         </div>
     </nav>
 
-    <!-- Full Screen Scanner Modal -->
+    
     <div id="scanner-modal" class="scanner-modal">
-        <!-- Top Bar -->
+        
         <div class="scan-controls"
             style="background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%); padding-top: 40px;">
             <button class="btn-icon-circle" onclick="closeScanner()">
@@ -270,7 +270,7 @@
 
         <div class="scanner-viewbox">
             <div id="reader"></div>
-            <!-- Overlay Graphics -->
+            
             <div class="scan-overlay">
                 <div class="scan-corner tl"></div>
                 <div class="scan-corner tr"></div>
@@ -279,7 +279,7 @@
             </div>
         </div>
 
-        <!-- Manual Entry Option -->
+        
         <div class="scan-controls" style="background: black; flex-direction: column; gap: 16px; padding-bottom: 40px;">
             <p class="text-sm text-muted">Align the QR code within the frame</p>
             <button class="btn-icon-circle" style="width: auto; padding: 0 24px; border-radius: 24px;"

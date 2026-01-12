@@ -1,20 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-    /* ═══════════════════════════════════════════════════════════════════════
-       ATTENDSY DESIGN SYSTEM — Warm Scandinavian Matte (Human-Centric)
-       ═══════════════════════════════════════════════════════════════════════ */
+    
 
-    /* -- Warm Neutral Palette -- */
+    
     --sand-light: #FDFBF7;
-    /* Creamy White */
+    
     --sand-base: #F5F2EB;
-    /* Warm Beige/Stone */
+    
     --stone-medium: #E5E2DC;
-    /* Muted darker stone */
+    
     --warm-grey: #AAA69D;
 
-    /* -- Modern Violet Palette -- */
+    
     --dark-amethyst: #10002bff;
     --dark-amethyst-2: #240046ff;
     --indigo-ink: #3c096cff;
@@ -24,41 +22,41 @@
     --mauve-magic: #c77dffff;
     --mauve: #e0aaffff;
 
-    /* -- Accents (Modernized) -- */
+    
     --accent-ochre: var(--royal-violet);
-    /* Replacing Ochre with Royal Violet as primary accent */
+    
     --accent-graphite: var(--dark-amethyst-2);
     --primary-gradient: linear-gradient(135deg, var(--royal-violet), var(--indigo-velvet));
 
-    /* -- Page Background (Updated to softer violet tint if desired, or kept warm) -- */
-    /* Keeping warm base for now, but adding violet tint possibilities */
+    
+    
     --bg-body: #F5F2EB;
     --bg-gradient-start: #FDFBF7;
     --bg-gradient-end: #F0EBE0;
 
-    /* -- Matte Surfaces (Card) -- */
+    
     --card-surface: #FFFFFF;
     --card-border: 1px solid rgba(255, 255, 255, 0.8);
 
-    /* -- Text Colors (High Clarity, Warm) -- */
+    
     --text-heading: #2C2C2C;
-    /* Soft Black */
+    
     --text-primary: #4A4A4A;
-    /* Warm Charcoal */
+    
     --text-secondary: #84817A;
-    /* Stone Gray */
+    
     --text-muted: #B2BEC3;
     --text-light: #FFFFFF;
     --text-accent: var(--accent-ochre);
-    /* Using accent-ochre for accent text */
+    
 
-    /* -- Shadows (Natural Daylight) -- */
-    /* Soft, diffused, warm shadows. No harsh blacks. */
+    
+    
     --shadow-sm: 0 2px 8px rgba(90, 80, 70, 0.04);
     --shadow-md: 0 8px 24px rgba(90, 80, 70, 0.06);
     --shadow-lg: 0 20px 40px rgba(90, 80, 70, 0.08);
 
-    /* Neumorphic/Soft Highlight & Shadow for "Embedded" feel */
+    
     --shadow-soft-raise:
         -4px -4px 12px rgba(255, 255, 255, 0.9),
         4px 4px 12px rgba(180, 170, 160, 0.12);
@@ -67,7 +65,7 @@
         inset 4px 4px 10px rgba(180, 170, 160, 0.15),
         inset -4px -4px 10px rgba(255, 255, 255, 0.9);
 
-    /* -- Status Colors (Muted/Pastel) -- */
+    
     --status-success-bg: #E3FCEF;
     --status-success-text: #006644;
     --status-success-solid: #36B37E;
@@ -80,22 +78,20 @@
     --status-error-text: #DE350B;
     --status-error-solid: #FF5630;
 
-    /* -- Radii -- */
+    
     --radius-sm: 8px;
     --radius-md: 16px;
     --radius-lg: 24px;
-    /* Pillowy */
+    
     --radius-full: 9999px;
 
     --transition-fast: 0.15s ease;
     --transition-normal: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
     --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
-    /* Kept from original, adjust if needed */
+    
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   BASE STYLES
-   ═══════════════════════════════════════════════════════════════════════════ */
+
 
 * {
     box-sizing: border-box;
@@ -106,7 +102,7 @@
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background-color: var(--bg-body);
-    /* Soft Matte Texture (Subtle Noise) */
+    
     background:
         url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E"),
         linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
@@ -120,9 +116,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   TYPOGRAPHY
-   ═══════════════════════════════════════════════════════════════════════════ */
+
 
 h1,
 h2,
@@ -169,21 +163,19 @@ p {
     color: var(--text-accent);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   HEADER / NAVIGATION BAR (Crextio Style)
-   ═══════════════════════════════════════════════════════════════════════════ */
+
 
 header {
     background: var(--card-surface);
-    /* Changed from glass-surface */
+    
     backdrop-filter: none;
-    /* Changed from blur(20px) */
+    
     -webkit-backdrop-filter: none;
-    /* Changed from blur(20px) */
+    
     border: 1px solid rgba(255, 255, 255, 0.6);
-    /* Changed from glass-border */
+    
     border-radius: var(--radius-lg);
-    /* Changed from radius-xl */
+    
     padding: 0.75rem 1.5rem;
     margin: 1rem 1.5rem;
     display: flex;
@@ -211,18 +203,18 @@ header {
     letter-spacing: -0.5px;
 }
 
-/* Navigation Tabs — Sliding Pill Style */
+
 .nav-tabs {
     position: relative;
     display: flex;
     align-items: center;
     background: var(--stone-medium);
-    /* Changed from dark-amethyst-2 */
-    /* Slightly more padding for the pill to float in */
+    
+    
     padding: 6px;
     border-radius: var(--radius-full);
     box-shadow: var(--shadow-embedded);
-    /* Changed from inset 0 2px 10px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05); */
+    
 }
 
 .nav-slider {
@@ -231,14 +223,14 @@ header {
     left: 6px;
     height: calc(100% - 12px);
     background: var(--accent-ochre);
-    /* Changed from royal-violet */
+    
     border-radius: var(--radius-full);
     transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-    /* Bouncy spring effect */
+    
     z-index: 1;
     box-shadow: var(--shadow-soft-raise);
-    /* Changed from 0 4px 15px rgba(199, 125, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3); */
-    /* Width and transform will be set by JS */
+    
+    
 }
 
 .nav-tab {
@@ -246,8 +238,8 @@ header {
     z-index: 2;
     padding: 0.6rem 1.25rem;
     color: var(--text-secondary);
-    /* Changed from mauve */
-    /* Inactive color */
+    
+    
     border-radius: var(--radius-full);
     font-weight: 600;
     font-size: 0.875rem;
@@ -266,10 +258,10 @@ header {
 .nav-tab.active {
     color: #ffffff;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    /* No background here because .nav-slider provides it */
+    
 }
 
-/* User Profile Section */
+
 .user-profile {
     display: flex;
     align-items: center;
@@ -281,7 +273,7 @@ header {
     height: 40px;
     border-radius: 50%;
     background: var(--stone-medium);
-    /* Changed from rgba(0, 0, 0, 0.03) */
+    
     border: none;
     cursor: pointer;
     display: flex;
@@ -294,9 +286,9 @@ header {
 
 .notification-btn:hover {
     background: var(--accent-ochre);
-    /* Changed from rgba(123, 44, 191, 0.1) */
+    
     color: var(--text-light);
-    /* Changed from royal-violet */
+    
 }
 
 .avatar {
@@ -311,12 +303,10 @@ header {
     font-weight: 600;
     font-size: 0.9rem;
     box-shadow: var(--shadow-sm);
-    /* Changed from 0 2px 8px rgba(123, 44, 191, 0.25) */
+    
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   MAIN LAYOUT
-   ═══════════════════════════════════════════════════════════════════════════ */
+
 
 main {
     padding: 1rem 1.5rem 2rem;
@@ -326,27 +316,25 @@ main {
     width: 100%;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   GLASS CARDS (Frosted Style)
-   ═══════════════════════════════════════════════════════════════════════════ */
 
-/* Soft Matte Card (Pillowy, Embedded) */
+
+
 .glass-card {
     background: var(--card-surface);
     backdrop-filter: none;
-    /* Removed glass blur */
+    
     -webkit-backdrop-filter: none;
 
     border: 1px solid rgba(255, 255, 255, 0.6);
     border-radius: var(--radius-lg);
     padding: 1.5rem;
 
-    /* Soft Natural Daylight Shadow */
+    
     box-shadow:
         -2px -2px 10px rgba(255, 255, 255, 0.8),
-        /* Top-left highlight */
+        
         2px 2px 15px rgba(90, 80, 70, 0.08);
-    /* Bottom-right shadow */
+    
 
     transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
     position: relative;
@@ -357,10 +345,10 @@ main {
 .glass-card::before,
 .glass-card::after {
     display: none;
-    /* Remove previous glass highlights */
+    
 }
 
-/* Hover: Slightly Lifted (Tactile) */
+
 .glass-card:hover {
     transform: translateY(-2px);
     box-shadow:
@@ -368,7 +356,7 @@ main {
         4px 8px 20px rgba(90, 80, 70, 0.12);
 }
 
-/* Card Heading Fixes */
+
 .glass-card h3,
 .glass-card h4,
 .glass-card h2,
@@ -376,7 +364,7 @@ main {
     color: var(--text-heading);
 }
 
-/* Revert Styles */
+
 input,
 select,
 textarea {
@@ -386,7 +374,7 @@ textarea {
     padding: 12px 18px;
     color: var(--text-heading);
 
-    /* Pillowy Embedded Input */
+    
     box-shadow: var(--shadow-embedded);
     transition: all 0.3s ease;
 }
@@ -403,7 +391,7 @@ textarea:focus {
 
 
 
-/* Dark Glass Card Variant */
+
 .glass-card.dark {
     background: var(--dark-panel-surface);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -419,9 +407,7 @@ textarea:focus {
     color: var(--dark-panel-muted);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   BUTTONS
-   ═══════════════════════════════════════════════════════════════════════════ */
+
 
 .btn {
     padding: 10px 24px;
@@ -478,15 +464,13 @@ textarea:focus {
     color: var(--royal-violet);
 }
 
-/* Small Button Variant */
+
 .btn-sm {
     padding: 6px 14px;
     font-size: 0.8rem;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   DASHBOARD OVERVIEW LAYOUT
-   ═══════════════════════════════════════════════════════════════════════════ */
+
 
 .dashboard-overview {
     display: grid;
@@ -501,9 +485,7 @@ textarea:focus {
     }
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   METRICS GRID (KPI Cards)
-   ═══════════════════════════════════════════════════════════════════════════ */
+
 
 .metrics-grid {
     display: grid;
@@ -563,9 +545,7 @@ textarea:focus {
     color: var(--status-error-text);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   TIMELINE / TODAY'S CLASSES
-   ═══════════════════════════════════════════════════════════════════════════ */
+
 
 .timeline-item {
     display: flex;
@@ -615,9 +595,7 @@ textarea:focus {
     border-left: 3px solid var(--royal-violet);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   STATUS PILLS
-   ═══════════════════════════════════════════════════════════════════════════ */
+
 
 .status-pill {
     padding: 4px 12px;
@@ -644,9 +622,7 @@ textarea:focus {
     color: var(--status-error-text);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   PROGRESS INDICATORS
-   ═══════════════════════════════════════════════════════════════════════════ */
+
 
 .progress-bar {
     height: 8px;
@@ -662,7 +638,7 @@ textarea:focus {
     transition: width 0.5s ease;
 }
 
-/* Circular Progress */
+
 .circular-progress {
     position: relative;
     width: 120px;
@@ -687,9 +663,7 @@ textarea:focus {
     transition: stroke-dashoffset 0.5s ease;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   FORM INPUTS
-   ═══════════════════════════════════════════════════════════════════════════ */
+
 
 input,
 select,
@@ -717,7 +691,7 @@ input::placeholder {
     color: var(--text-muted);
 }
 
-/* Search Input */
+
 .search-input {
     position: relative;
 }
@@ -743,9 +717,7 @@ input::placeholder {
     opacity: 0.5;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   TABS (Engagement Panel Style)
-   ═══════════════════════════════════════════════════════════════════════════ */
+
 
 .tab-container {
     display: flex;
@@ -786,9 +758,7 @@ input::placeholder {
     border-radius: var(--radius-full);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   STUDENT CARDS GRID
-   ═══════════════════════════════════════════════════════════════════════════ */
+
 
 .students-grid {
     display: grid;
@@ -837,9 +807,7 @@ input::placeholder {
     color: var(--royal-violet);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   DATA TABLE
-   ═══════════════════════════════════════════════════════════════════════════ */
+
 
 .data-table {
     width: 100%;
@@ -867,9 +835,7 @@ input::placeholder {
     background: rgba(123, 44, 191, 0.02);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   LIVE SESSION OVERLAY
-   ═══════════════════════════════════════════════════════════════════════════ */
+
 
 #live-session-overlay {
     position: fixed;
@@ -946,7 +912,7 @@ input::placeholder {
     overflow: hidden;
 }
 
-/* Access Panel */
+
 .access-panel {
     display: flex;
     flex-direction: column;
@@ -1025,7 +991,7 @@ input::placeholder {
     transition: width 1s linear;
 }
 
-/* List Panel (Dark) */
+
 .list-panel {
     display: flex;
     flex-direction: column;
@@ -1080,9 +1046,7 @@ input::placeholder {
     background: rgba(255, 255, 255, 0.05);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   UTILITY CLASSES
-   ═══════════════════════════════════════════════════════════════════════════ */
+
 
 .hidden {
     display: none !important;
@@ -1152,9 +1116,7 @@ input::placeholder {
     width: 100%;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   RESPONSIVE
-   ═══════════════════════════════════════════════════════════════════════════ */
+
 
 @media (max-width: 768px) {
     header {
@@ -1184,9 +1146,7 @@ input::placeholder {
     }
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   COURSES GRID (Schedule Cards)
-   ═══════════════════════════════════════════════════════════════════════════ */
+
 
 .courses-grid {
     display: grid;
@@ -1194,7 +1154,7 @@ input::placeholder {
     gap: 1rem;
 }
 
-/* Session Panel Compatibility */
+
 .session-panel {
     display: grid;
     grid-template-columns: 300px 1fr;
@@ -1250,11 +1210,9 @@ input::placeholder {
     background: rgba(123, 44, 191, 0.03);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   STUDENT DIRECTORY (Crextio Style)
-   ═══════════════════════════════════════════════════════════════════════════ */
 
-/* Control Bar */
+
+
 .control-bar {
     padding: 0.75rem 1rem;
     display: flex;
@@ -1269,19 +1227,19 @@ input::placeholder {
     color: var(--text-secondary);
 }
 
-/* Table Styles - Refined for Directory */
+
 .table-container {
     padding: 0;
-    /* Flush table */
+    
     overflow-x: auto;
 }
 
 .data-table {
     width: 100%;
     border-collapse: separate;
-    /* For border radius on rows */
+    
     border-spacing: 0 4px;
-    /* Space between rows */
+    
     margin-top: 0.5rem;
     padding: 0 1rem 1rem;
 }
@@ -1291,7 +1249,7 @@ input::placeholder {
     color: var(--text-muted);
     font-weight: 600;
     text-transform: capitalize;
-    /* "Name", not "NAME" per reference */
+    
     padding: 0.75rem 1rem;
     border: none;
     letter-spacing: 0.5px;
@@ -1314,14 +1272,14 @@ input::placeholder {
     border-top: none;
 }
 
-/* Row Hover / Selection (Gold/Yellow Accent) */
+
 .data-table tbody tr:hover {
     background: rgba(255, 255, 255, 0.4);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
     transform: translateY(-1px);
 }
 
-/* Selected Row (mimicking reference yellow row) */
+
 .data-table tbody tr.selected {
     background: linear-gradient(90deg, #FBAF41 0%, #FCD082 100%);
     box-shadow: 0 4px 12px rgba(251, 175, 65, 0.3);
@@ -1330,7 +1288,7 @@ input::placeholder {
 
 .data-table tbody tr.selected td {
     color: #5D3A00;
-    /* Dark brown for contrast on yellow */
+    
     border-color: transparent;
 }
 
@@ -1338,7 +1296,7 @@ input::placeholder {
     color: rgba(93, 58, 0, 0.7);
 }
 
-/* Checkbox Style */
+
 .data-table input[type="checkbox"] {
     width: 16px;
     height: 16px;
@@ -1351,7 +1309,7 @@ input::placeholder {
     accent-color: #5D3A00;
 }
 
-/* User Avatar in Table */
+
 .table-user {
     display: flex;
     align-items: center;
@@ -1372,7 +1330,7 @@ input::placeholder {
     font-size: 0.85rem;
 }
 
-/* Status Chips (Pills) */
+
 .status-chip {
     padding: 4px 12px;
     border-radius: 20px;
@@ -1404,7 +1362,7 @@ input::placeholder {
 }
 
 
-/* Modal Styles */
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -1434,7 +1392,7 @@ input::placeholder {
     animation: modalSlideUp 0.3s ease-out;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
     background: #fff;
-    /* Ensure solid background for inputs visibility */
+    
 }
 
 @keyframes modalSlideUp {
@@ -1449,7 +1407,7 @@ input::placeholder {
     }
 }
 
-/* Start/End Utilities if missing */
+
 .flex-end {
     display: flex;
     justify-content: flex-end;
@@ -1460,11 +1418,9 @@ input::placeholder {
     position: relative;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   AT-RISK STUDENTS MODAL
-   ═══════════════════════════════════════════════════════════════════════════ */
 
-/* Clickable Metric Card */
+
+
 .metric-card-clickable {
     cursor: pointer;
     position: relative;
@@ -1489,7 +1445,7 @@ input::placeholder {
     box-shadow: inset 0 0 0 2px rgba(123, 44, 191, 0.3);
 }
 
-/* At-Risk Modal Specific */
+
 .at-risk-modal {
     width: 700px;
     max-width: 95%;
@@ -1499,7 +1455,7 @@ input::placeholder {
     flex-direction: column;
 }
 
-/* Risk Summary Stats Row */
+
 .risk-summary {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1556,7 +1512,7 @@ input::placeholder {
     color: #B8860B;
 }
 
-/* Risk Filter Tabs */
+
 .risk-filter-tabs {
     display: flex;
     gap: 0.5rem;
@@ -1586,7 +1542,7 @@ input::placeholder {
     border-color: var(--royal-violet);
 }
 
-/* At-Risk Students List */
+
 .at-risk-list {
     flex: 1;
     overflow-y: auto;
@@ -1596,11 +1552,9 @@ input::placeholder {
     background: rgba(0, 0, 0, 0.01);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   STUDENT DASHBOARD ENHANCEMENTS
-   ═══════════════════════════════════════════════════════════════════════════ */
 
-/* Quick Stats Cards */
+
+
 .quick-stats-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -1628,7 +1582,7 @@ input::placeholder {
     overflow: hidden;
 }
 
-/* Background Tints */
+
 .quick-stat-card.stat-success {
     background: linear-gradient(135deg, rgba(227, 252, 239, 0.5), rgba(255, 255, 255, 0.8));
 }
@@ -1648,8 +1602,8 @@ input::placeholder {
 .quick-stat-card:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-md);
-    /* background: rgba(255, 255, 255, 0.9); */
-    /* Removed as per instruction */
+    
+    
 }
 
 .quick-stat-card:active {
@@ -1661,8 +1615,8 @@ input::placeholder {
     justify-content: space-between;
     align-items: center;
     font-size: 0.85rem;
-    /* color: var(--text-secondary); */
-    /* Let children decide */
+    
+    
     font-weight: 600;
 }
 
@@ -1674,7 +1628,7 @@ input::placeholder {
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
-    /* background: rgba(255,255,255,0.6); */
+    
 }
 
 .stat-success .stat-value-lg {
@@ -1727,12 +1681,12 @@ input::placeholder {
     opacity: 0.8;
 }
 
-/* Rich Course Cards */
+
 .course-card-rich {
     background: rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.4);
-    /* Softer border left */
+    
     border-left: 4px solid var(--royal-violet);
     border-radius: var(--radius-lg);
     padding: 1.5rem;
@@ -1770,7 +1724,7 @@ input::placeholder {
     font-weight: 700;
 }
 
-/* Rich Course Components */
+
 .badge-dept {
     font-size: 0.7rem;
     font-weight: 700;
@@ -1780,7 +1734,7 @@ input::placeholder {
     letter-spacing: 0.5px;
 }
 
-/* Circular Progress */
+
 .circular-progress {
     width: 60px;
     height: 60px;
@@ -1790,7 +1744,7 @@ input::placeholder {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Background handled inline via JS conic-gradient */
+    
 }
 
 .circular-progress .inner-circle {
@@ -1804,7 +1758,7 @@ input::placeholder {
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-/* Metrics Grid */
+
 .course-metrics-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -1833,12 +1787,12 @@ input::placeholder {
     text-transform: uppercase;
 }
 
-/* Hover Actions REMOVED per user request */
+
 .hover-actions {
     display: none !important;
 }
 
-/* Floating Action Button (Scan QR) */
+
 .fab-scan-qr {
     position: fixed;
     bottom: 2rem;
@@ -1878,7 +1832,7 @@ input::placeholder {
     letter-spacing: 0.5px;
 }
 
-/* Responsive FAB */
+
 @media (max-width: 480px) {
     .fab-scan-qr {
         bottom: 1.5rem;
@@ -1894,12 +1848,12 @@ input::placeholder {
     font-weight: 600;
 }
 
-/* Fix Card Top alignment */
+
 .card-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* Changed from flex-start */
+    
 }
 
 .progress-mini-track {
@@ -1927,7 +1881,7 @@ input::placeholder {
     gap: 0.5rem;
 }
 
-/* Calendar View - Visual Attendance Style */
+
 .calendar-container {
     background: white;
     border-radius: var(--radius-lg);
@@ -1963,7 +1917,7 @@ input::placeholder {
     cursor: pointer;
 }
 
-/* Live Poll Styles */
+
 .poll-option-wrapper {
     background: rgba(255, 255, 255, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.5);
@@ -2021,7 +1975,7 @@ input::placeholder {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 0.75rem;
-    /* More spacing for bubbles */
+    
     text-align: center;
 }
 
@@ -2032,7 +1986,7 @@ input::placeholder {
     margin-bottom: 0.5rem;
 }
 
-/* The Day Cell Container */
+
 .cal-cell {
     aspect-ratio: 1;
     display: flex;
@@ -2041,7 +1995,7 @@ input::placeholder {
     position: relative;
 }
 
-/* The Visual Bubble */
+
 .cal-bubble {
     width: 40px;
     height: 40px;
@@ -2059,19 +2013,19 @@ input::placeholder {
     transform: scale(1.1);
 }
 
-/* 1. Default (Future / No Status yet): Show Date Number */
+
 .cal-bubble.default {
     color: var(--text-secondary);
     background: transparent;
 }
 
-/* 2. Present: Green Bubble with Check */
+
 .cal-bubble.present {
     background: #a3e635;
-    /* Lime Green from Ref */
+    
     color: #1a2e05;
     font-size: 0;
-    /* Hide text */
+    
 }
 
 .cal-bubble.present::after {
@@ -2081,10 +2035,10 @@ input::placeholder {
     height: 20px;
 }
 
-/* 3. Absent: Red/Orange Bubble with X */
+
 .cal-bubble.absent {
     background: #fb7185;
-    /* Soft Red */
+    
     color: white;
     font-size: 0;
 }
@@ -2096,14 +2050,14 @@ input::placeholder {
     height: 20px;
 }
 
-/* 4. No Class / Weekend: Gray Bubble with Gray X */
+
 .cal-bubble.off-day {
     background: #f3f4f6;
     color: #9ca3af;
     font-size: 0;
 }
 
-/* 5. Late: Yellow/Amber Bubble with Warning Icon */
+
 .cal-bubble.late {
     background: #fef3c7;
     color: #92400e;
@@ -2111,20 +2065,20 @@ input::placeholder {
 }
 
 .cal-bubble.late::after {
-    /* Exclamation Triangle or Clock? Using simpler circle for now or SVG */
+    
     content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2392400e' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z'%3E%3C/path%3E%3Cline x1='12' y1='9' x2='12' y2='13'%3E%3C/line%3E%3Cline x1='12' y1='17' x2='12.01' y2='17'%3E%3C/line%3E%3C/svg%3E");
     display: block;
     width: 18px;
     height: 18px;
 }
 
-/* Today Indicator */
+
 .cal-bubble.today {
     box-shadow: 0 0 0 2px var(--royal-violet);
     font-weight: 800;
 }
 
-/* Calendar Legend */
+
 .calendar-legend {
     display: flex;
     justify-content: center;
@@ -2164,9 +2118,7 @@ input::placeholder {
     background: #e5e7eb;
 }
 
-/* ══════════════════════════════════════════════════════════════════════════
-    CINEMATIC SCANNER UI (Reference Based)
-    ══════════════════════════════════════════════════════════════════════════ */
+
 #scanner-container {
     position: fixed;
     top: 0;
@@ -2175,13 +2127,13 @@ input::placeholder {
     height: 100vh;
     background: #000;
     z-index: 2000;
-    /* Above everything */
+    
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
-/* Make the video fill the container */
+
 #reader {
     position: absolute !important;
     top: 0;
@@ -2196,10 +2148,10 @@ input::placeholder {
     width: 100% !important;
     height: 100% !important;
     filter: brightness(0.9) contrast(1.1);
-    /* Slight boost */
+    
 }
 
-/* Grid Overlay */
+
 .scan-grid-overlay {
     position: absolute;
     inset: 0;
@@ -2213,7 +2165,7 @@ input::placeholder {
     -webkit-mask-image: radial-gradient(circle at center, transparent 30%, black 100%);
 }
 
-/* Corner Brackets */
+
 .scan-bracket {
     position: absolute;
     width: 60px;
@@ -2252,7 +2204,7 @@ input::placeholder {
     border-top: none;
 }
 
-/* Top Bar */
+
 .scan-top-bar {
     position: absolute;
     top: 2rem;
@@ -2281,7 +2233,7 @@ input::placeholder {
 
 .scan-status-pill {
     background: #d4e157;
-    /* Lime/Yellow from ref */
+    
     color: #333;
     padding: 8px 16px;
     border-radius: 20px;
@@ -2292,22 +2244,20 @@ input::placeholder {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Bottom Controls */
+
 .scan-bottom-bar {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
     height: 25%;
-    /* Curve area */
+    
     background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-    /* Fading dark */
-    /* Or the curved shape from ref? Let's stick to cleaner simpler overlay first */
-    /* The ref has a full card background color: #7CA1B3 roughly. */
-    /* Let's try to match the Blue/Teal aesthetics if requested, but for now transparent is safer for camera. */
-    /* To match Ref EXACTLY: The blue background is actually BEHIND the person, 
-       but here the camera IS the background. 
-       The UI floats on top. */
+    
+    
+    
+    
+    
     display: flex;
     justify-content: center;
     align-items: center;
@@ -2336,7 +2286,7 @@ input::placeholder {
     width: 84px;
     height: 84px;
     background: #ff5722;
-    /* Orange Red */
+    
     border: 4px solid rgba(255, 255, 255, 0.3);
     color: white;
     font-size: 1rem;
@@ -2344,11 +2294,9 @@ input::placeholder {
     letter-spacing: 1px;
 }
 
-/* ══════════════════════════════════════════════════════════════════════════
-    MOBILE RESPONSIVENESS
-    ══════════════════════════════════════════════════════════════════════════ */
 
-/* Hide Bottom Nav on Desktop */
+
+
 .mobile-bottom-nav {
     display: none;
 }
@@ -2356,21 +2304,21 @@ input::placeholder {
 @media (max-width: 768px) {
     body {
         padding-bottom: 80px;
-        /* Space for bottom nav */
+        
     }
 
-    /* Layout Adjustments */
+    
     .dashboard-overview {
         grid-template-columns: 1fr;
-        /* Stack columns */
+        
     }
 
-    /* Hide Sidebar/Desktop Nav if it exists (assuming it's .sidebar or similar) */
+    
     .sidebar {
         display: none;
     }
 
-    /* Adjust Header */
+    
     header {
         padding: 1rem;
     }
@@ -2383,9 +2331,9 @@ input::placeholder {
         font-size: 1.25rem;
     }
 
-    /* Stats Cards Scrollable or Stacked? Stacked via quick-stats-row grid already */
+    
 
-    /* Mobile Bottom Navigation */
+    
     .mobile-bottom-nav {
         display: flex;
         justify-content: space-around;
@@ -2428,7 +2376,7 @@ input::placeholder {
         stroke-width: 2px;
     }
 
-    /* Adjust FAB position to sit above nav */
+    
     .fab-scan-qr {
         bottom: 80px;
     }
@@ -2443,10 +2391,10 @@ input::placeholder {
     cursor: pointer;
     position: relative;
     border-left: 3px solid transparent;
-    /* Priority Indicator */
+    
 }
 
-/* Priority Borders */
+
 .notif-urgent {
     border-left-color: #C62828;
     background: rgba(198, 40, 40, 0.02);
@@ -2464,7 +2412,7 @@ input::placeholder {
     background: rgba(123, 44, 191, 0.03);
 }
 
-/* Unread Badge (Dot) */
+
 .notif-unread-dot {
     position: absolute;
     top: 1.25rem;
@@ -2538,7 +2486,7 @@ input::placeholder {
     font-weight: 500;
 }
 
-/* Timeline History Polish */
+
 .timeline-vertical {
     position: relative;
     padding-left: 2rem;
@@ -2547,7 +2495,7 @@ input::placeholder {
 .timeline-line {
     position: absolute;
     left: 19px;
-    /* Centered with marker */
+    
     top: 0;
     bottom: 0;
     width: 2px;
@@ -2571,10 +2519,10 @@ input::placeholder {
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
     z-index: 1;
     background: white;
-    /* Fallback */
+    
 }
 
-/* Marker States with Glow */
+
 .marker-present {
     background: #2E7D32;
     box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.1);
@@ -2692,7 +2640,7 @@ input::placeholder {
     color: var(--status-success-text);
 }
 
-/* Trend Indicators */
+
 .trend-indicator {
     display: inline-flex;
     align-items: center;
@@ -2718,7 +2666,7 @@ input::placeholder {
     background: var(--status-success-bg);
 }
 
-/* Risk Badge */
+
 .risk-badge {
     padding: 4px 10px;
     border-radius: var(--radius-full);
@@ -2743,7 +2691,7 @@ input::placeholder {
     color: #B8860B;
 }
 
-/* At-Risk Actions */
+
 .at-risk-actions {
     display: flex;
     flex-direction: column;
@@ -2756,7 +2704,7 @@ input::placeholder {
     font-size: 0.75rem;
 }
 
-/* Empty State */
+
 .at-risk-empty {
     display: flex;
     flex-direction: column;
@@ -2777,7 +2725,7 @@ input::placeholder {
     font-size: 0.9rem;
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 600px) {
     .at-risk-modal {
         width: 100%;
@@ -2811,14 +2759,12 @@ input::placeholder {
     }
 }
 
-/* 
-   STUDENT LIST HOVER EFFECTS (Crextio Style)
-    */
+
 
 #student-directory-body {
     border-collapse: separate;
     border-spacing: 0 8px;
-    /* Spacing for floating pill effect */
+    
 }
 
 
@@ -2828,7 +2774,7 @@ input::placeholder {
         box-shadow 0.2s ease;
     cursor: pointer;
     border-radius: 50px;
-    /* Animation setup */
+    
     animation: fadeInUp 0.5s ease forwards;
     opacity: 0;
 }
@@ -2853,7 +2799,7 @@ input::placeholder {
     vertical-align: middle;
 }
 
-/* Rounded corners for the row pill */
+
 #student-directory-body tr td:first-child {
     border-top-left-radius: 50px;
     border-bottom-left-radius: 50px;
@@ -2864,24 +2810,24 @@ input::placeholder {
     border-bottom-right-radius: 50px;
 }
 
-/* Hover State - Violet Pill */
+
 #student-directory-body tr:hover {
     transform: scale(1.02) translateY(-2px);
-    /* Smooth lift */
+    
     z-index: 10;
     position: relative;
-    /* Ensure it lifts above others */
+    
 }
 
 #student-directory-body tr:hover td {
     background-color: var(--accent-ochre);
-    /* Uses Royal Violet */
+    
     color: white;
     box-shadow: 0 8px 20px rgba(123, 44, 191, 0.3);
-    /* Softer, deeper shadow */
+    
 }
 
-/* Fix internal text colors on hover to be white */
+
 #student-directory-body tr:hover h4,
 #student-directory-body tr:hover .text-muted,
 #student-directory-body tr:hover span,
@@ -2889,7 +2835,7 @@ input::placeholder {
     color: white !important;
 }
 
-/* Checkbox and Button styles on hover */
+
 #student-directory-body tr:hover input[type='checkbox'] {
     accent-color: white;
 }
@@ -2904,17 +2850,15 @@ input::placeholder {
     transform: scale(1.1);
 }
 
-/* Status Chip override on hover */
+
 #student-directory-body tr:hover .status-chip {
     background-color: rgba(255, 255, 255, 0.2);
     color: white;
 }
 
-/* 
-   ENHANCED METRIC CARD STYLES (Risk Section)
-    */
 
-/* Gradient Text for Alert Numbers */
+
+
 .gradient-text-error {
     background: linear-gradient(135deg, #FF5630, #FFAB00);
     -webkit-background-clip: text;
@@ -2923,7 +2867,7 @@ input::placeholder {
     font-weight: 800;
 }
 
-/* Risk Badge Label (High Risk) */
+
 .risk-badge {
     position: absolute;
     top: 14px;
@@ -2931,9 +2875,9 @@ input::placeholder {
     width: auto;
     height: auto;
     background-color: #FFECEB;
-    /* Pale red background */
+    
     color: #DE350B;
-    /* Strong red text */
+    
     padding: 6px 10px;
     border-radius: 8px;
     font-size: 11px;
@@ -2963,12 +2907,12 @@ input::placeholder {
     }
 }
 
-/* Progress Bar */
+
 .progress-track {
     width: 100%;
     height: 6px;
     background-color: rgba(0, 0, 0, 0.05);
-    /* Very subtle track */
+    
     border-radius: 10px;
     overflow: hidden;
     margin-top: 8px;
@@ -2981,7 +2925,7 @@ input::placeholder {
     transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Hover Preview Tooltip */
+
 .hover-preview-tooltip {
     position: absolute;
     bottom: calc(100% + 10px);
@@ -2989,26 +2933,26 @@ input::placeholder {
     transform: translateX(-50%);
     width: 180px;
     background: white;
-    /* Clean white for contrast */
+    
     color: var(--text-primary);
     padding: 12px;
     border-radius: 12px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
     z-index: 100;
     pointer-events: none;
-    /* Let hover pass through */
+    
     opacity: 0;
     transition: opacity 0.3s ease, transform 0.3s ease;
     border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-/* Show tooltip on card hover */
+
 #card-risk:hover .hover-preview-tooltip {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
 }
 
-/* Connect triangle */
+
 .hover-preview-tooltip::after {
     content: '';
     position: absolute;
@@ -3044,7 +2988,7 @@ input::placeholder {
     font-weight: 600;
 }
 
-/* Metric Trend Indicator */
+
 .metric-trend {
     display: inline-flex;
     align-items: center;
@@ -3079,9 +3023,7 @@ input::placeholder {
 }
 
 
-/* 
-   STUDENT PROFILE MODAL STYLES
-    */
+
 
 .profile-avatar-lg {
     width: 80px;
@@ -3159,14 +3101,12 @@ input::placeholder {
     color: #FF5630;
 }
 
-/* 
-   LIVE SESSION UI CORRECTIONS
-    */
 
-/* Ensure text visibility on light backgrounds */
+
+
 .list-panel {
     background: rgba(255, 255, 255, 0.6) !important;
-    /* Whiter glass */
+    
     backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 24px;
@@ -3176,7 +3116,7 @@ input::placeholder {
 
 .list-header h3 {
     color: #111827 !important;
-    /* Deep Navy/Black */
+    
     font-weight: 700;
 }
 
@@ -3190,7 +3130,7 @@ input::placeholder {
 
 .student-list-header span {
     color: #6B7280 !important;
-    /* Dark Gray */
+    
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -3213,16 +3153,16 @@ input::placeholder {
 
 .live-student-row span {
     color: #1F2937;
-    /* Dark text for name */
+    
 }
 
-/* Override text-muted inside live list for visibility */
+
 .live-student-row .text-muted {
     color: #9CA3AF !important;
-    /* Medium Gray, visible on light */
+    
 }
 
-/* QR Panel Text Visibility */
+
 .access-panel .pin-label {
     color: #4B5563 !important;
 }
