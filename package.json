@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "scripts": {
         "start": "node backend/src/server.js",
-        "postinstall": "cd backend && npm install && npx prisma generate --schema=../prisma/schema.prisma"
+        "postinstall": "prisma generate"
     },
     "dependencies": {
         "@prisma/client": "5.10.2",
@@ -13,7 +13,6 @@
         "dotenv": "^16.4.5",
         "express": "^4.19.2",
         "jsonwebtoken": "^9.0.2",
-        "mysql2": "^3.9.3",
         "pg": "^8.16.3",
         "prisma": "5.10.2",
         "qrcode": "^1.5.3"
