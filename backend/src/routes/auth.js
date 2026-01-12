@@ -1,27 +1,35 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../config/db');
+const prisma = require('../config/prisma');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 // Register
 router.post('/register', async (req, res) => {
     const { full_name, email, password, role, device_id } = req.body;
-    
+
     try {
         // Check if user exists
-        const [existing] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
-        if (existing.length > 0) return res.status(400).json({ message: 'User already exists' });
+        const existing = await prisma.user.findUnique({
+            where: { email }
+        });
+
+        if (existing) return res.status(400).json({ message: 'User already exists' });
 
         // Hash password
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(password, salt);
 
         // Insert
-        await db.query(
-            'INSERT INTO users (full_name, email, password_hash, role, device_id) VALUES (?, ?, ?, ?, ?)',
-            [full_name, email, hash, role, device_id || null]
-        );
+        await prisma.user.create({
+            data: {
+                full_name,
+                email,
+                password_hash: hash,
+                role,
+                device_id: device_id || null
+            }
+        });
 
         res.status(201).json({ message: 'User registered successfully' });
     } catch (err) {
@@ -34,10 +42,11 @@ router.post('/login', async (req, res) => {
     const { email, password, device_id } = req.body;
 
     try {
-        const [users] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
-        if (users.length === 0) return res.status(404).json({ message: 'User not found' });
+        const user = await prisma.user.findUnique({
+            where: { email }
+        });
 
-        const user = users[0];
+        if (!user) return res.status(404).json({ message: 'User not found' });
 
         // Verify Password
         const isMatch = await bcrypt.compare(password, user.password_hash);

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../config/db');
+const prisma = require('../config/prisma');
 const { verifyToken, verifyRole } = require('../middleware/authMiddleware');
 const crypto = require('crypto');
 
@@ -34,14 +34,24 @@ router.post('/start', verifyToken, verifyRole('teacher'), async (req, res) => {
 
     try {
         // Deactivate previous active sessions for this course
-        await db.query('UPDATE sessions SET is_active = FALSE WHERE course_id = ?', [course_id]);
+        await prisma.session.updateMany({
+            where: { course_id: parseInt(course_id) },
+            data: { is_active: false }
+        });
 
-        const [result] = await db.query(
-            'INSERT INTO sessions (course_id, session_token, pin, latitude, longitude, radius_meters, expires_at) VALUES (?, ?, ?, ?, ?, ?, DATE_ADD(NOW(), INTERVAL 10 MINUTE))',
-            [course_id, session_token, pin, latitude, longitude, radius || 50]
-        );
+        const session = await prisma.session.create({
+            data: {
+                course_id: parseInt(course_id),
+                session_token,
+                pin,
+                latitude,
+                longitude,
+                radius_meters: radius || 50,
+                expires_at: new Date(Date.now() + 10 * 60000) // +10 minutes
+            }
+        });
 
-        res.json({ session_id: result.insertId, session_token, pin, message: 'Session started.' });
+        res.json({ session_id: session.id, session_token, pin, message: 'Session started.' });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -53,7 +63,10 @@ router.post('/session/:sessionId/rotate', verifyToken, verifyRole('teacher'), as
     const session_token = crypto.randomBytes(16).toString('hex');
 
     try {
-        await db.query('UPDATE sessions SET session_token = ? WHERE id = ?', [session_token, sessionId]);
+        await prisma.session.update({
+            where: { id: parseInt(sessionId) },
+            data: { session_token }
+        });
         res.json({ session_token });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -64,9 +77,11 @@ router.post('/session/:sessionId/rotate', verifyToken, verifyRole('teacher'), as
 router.get('/session/:sessionId/live', verifyToken, verifyRole('teacher'), async (req, res) => {
     const { sessionId } = req.params;
     try {
-        // Get all enrolled students + attendance status
-        const [students] = await db.query(
-            `SELECT u.full_name, u.id,
+        // Using raw query for complex join logic to maintain behavior
+        // Prisma's type-safe joins are great but replacing this specific report query 
+        // with 3-way join + CASE statement is simpler via raw SQL for migration.
+        const students = await prisma.$queryRaw`
+            SELECT u.full_name, u.id,
                     CASE 
                         WHEN a.status IS NOT NULL THEN a.status
                         ELSE 'absent'
@@ -76,11 +91,13 @@ router.get('/session/:sessionId/live', verifyToken, verifyRole('teacher'), async
              JOIN enrollments e ON u.id = e.student_id
              JOIN sessions s ON e.course_id = s.course_id
              LEFT JOIN attendance a ON s.id = a.session_id AND u.id = a.student_id
-             WHERE s.id = ?
-             ORDER BY status DESC, u.full_name ASC`,
-            [sessionId]
-        );
-        res.json(students);
+             WHERE s.id = ${parseInt(sessionId)}
+             ORDER BY status DESC, u.full_name ASC
+        `;
+
+        // Convert BigInts if any (though standard IDs here are Ints)
+        const formatted = students.map(s => ({ ...s, captured_at: s.captured_at }));
+        res.json(formatted);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -88,43 +105,51 @@ router.get('/session/:sessionId/live', verifyToken, verifyRole('teacher'), async
 
 // 2. Mark Attendance (Student)
 router.post('/mark', verifyToken, verifyRole('student'), async (req, res) => {
-    const { session_token, pin, latitude, longitude, device_id } = req.query; // Using query or body? Standardize on body.
+    const { session_token, pin, latitude, longitude, device_id } = req.body;
+
     // NOTE: The previous code used req.body. Let's stick to req.body.
-    const inputToken = req.body.session_token;
-    const inputPin = req.body.pin;
-    const studentLat = req.body.latitude;
-    const studentLon = req.body.longitude;
-    const studentDeviceId = req.body.device_id;
+    const inputToken = session_token;
+    const inputPin = pin;
+    const studentLat = latitude;
+    const studentLon = longitude;
+    const studentDeviceId = device_id;
 
     try {
         let session;
 
         // Strategy 1: Find by Session Token (QR Scan)
         if (inputToken) {
-            const [sessions] = await db.query(
-                'SELECT * FROM sessions WHERE session_token = ? AND is_active = TRUE AND expires_at > NOW()',
-                [inputToken]
-            );
-            if (sessions.length > 0) session = sessions[0];
+            session = await prisma.session.findFirst({
+                where: {
+                    session_token: inputToken,
+                    is_active: true,
+                    expires_at: { gt: new Date() }
+                }
+            });
         }
 
         // Strategy 2: Find by PIN (Manual Entry)
         if (!session && inputPin) {
-            const [sessions] = await db.query(
-                'SELECT * FROM sessions WHERE pin = ? AND is_active = TRUE AND expires_at > NOW()',
-                [inputPin]
-            );
-            if (sessions.length > 0) session = sessions[0];
+            session = await prisma.session.findFirst({
+                where: {
+                    pin: inputPin,
+                    is_active: true,
+                    expires_at: { gt: new Date() }
+                }
+            });
         }
 
         if (!session) return res.status(400).json({ message: 'Invalid code, expired session, or session not active.' });
 
         // Check if already marked
-        const [existing] = await db.query(
-            'SELECT * FROM attendance WHERE session_id = ? AND student_id = ?',
-            [session.id, req.user.id]
-        );
-        if (existing.length > 0) return res.status(400).json({ message: 'Attendance already marked for this session.' });
+        const existing = await prisma.attendance.findFirst({
+            where: {
+                session_id: session.id,
+                student_id: req.user.id
+            }
+        });
+
+        if (existing) return res.status(400).json({ message: 'Attendance already marked for this session.' });
 
         // Geo-fence check (Optional but recommended)
         // Only verify if session has coords AND student sent coords
@@ -145,10 +170,16 @@ router.post('/mark', verifyToken, verifyRole('student'), async (req, res) => {
         }
 
         // Mark present
-        await db.query(
-            'INSERT INTO attendance (session_id, student_id, status, device_id, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?)',
-            [session.id, req.user.id, 'present', studentDeviceId, studentLat, studentLon]
-        );
+        await prisma.attendance.create({
+            data: {
+                session_id: session.id,
+                student_id: req.user.id,
+                status: 'present',
+                device_id: studentDeviceId,
+                latitude: studentLat,
+                longitude: studentLon
+            }
+        });
 
         res.json({ message: 'Attendance marked successfully!', session_id: session.id });
 
@@ -161,16 +192,31 @@ router.post('/mark', verifyToken, verifyRole('student'), async (req, res) => {
 // 3. Get Attendance History (Student)
 router.get('/history', verifyToken, verifyRole('student'), async (req, res) => {
     try {
-        const [records] = await db.query(
-            `SELECT a.*, c.course_name, s.created_at as session_date 
-             FROM attendance a
-             JOIN sessions s ON a.session_id = s.id
-             JOIN courses c ON s.course_id = c.id
-             WHERE a.student_id = ?
-             ORDER BY s.created_at DESC`,
-            [req.user.id]
-        );
-        res.json(records);
+        const records = await prisma.attendance.findMany({
+            where: { student_id: req.user.id },
+            include: {
+                session: {
+                    include: {
+                        course: true
+                    }
+                }
+            },
+            orderBy: {
+                session: {
+                    created_at: 'desc'
+                }
+            }
+        });
+
+        // Flatten checks for frontend compatibility (optional, but good for keeping contract similar)
+        const formatted = records.map(r => ({
+            ...r,
+            course_name: r.session.course.course_name,
+            session_date: r.session.created_at
+            // omit complex objects if not needed
+        }));
+
+        res.json(formatted);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -179,16 +225,30 @@ router.get('/history', verifyToken, verifyRole('student'), async (req, res) => {
 // 4. Get Course Attendance (Teacher)
 router.get('/course/:courseId', verifyToken, verifyRole('teacher'), async (req, res) => {
     try {
-        const [records] = await db.query(
-            `SELECT a.*, u.full_name, s.created_at as date
-             FROM attendance a
-             JOIN users u ON a.student_id = u.id
-             JOIN sessions s ON a.session_id = s.id
-             WHERE s.course_id = ?
-             ORDER BY s.created_at DESC`,
-            [req.params.courseId]
-        );
-        res.json(records);
+        const records = await prisma.attendance.findMany({
+            where: {
+                session: {
+                    course_id: parseInt(req.params.courseId)
+                }
+            },
+            include: {
+                student: true,
+                session: true
+            },
+            orderBy: {
+                session: {
+                    created_at: 'desc'
+                }
+            }
+        });
+
+        const formatted = records.map(r => ({
+            ...r,
+            full_name: r.student.full_name,
+            date: r.session.created_at
+        }));
+
+        res.json(formatted);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

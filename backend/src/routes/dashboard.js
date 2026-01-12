@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../config/db');
+const prisma = require('../config/prisma');
 const { verifyToken, verifyRole } = require('../middleware/authMiddleware');
 
 // Helper: Calculate at-risk students for a teacher
 async function calculateAtRiskStudents(teacherId) {
     // Get all students enrolled in this teacher's courses with their attendance stats
-    const [students] = await db.query(`
+    const students = await prisma.$queryRaw`
         SELECT 
             u.id as student_id,
             u.full_name,
@@ -19,32 +19,38 @@ async function calculateAtRiskStudents(teacherId) {
         JOIN courses c ON e.course_id = c.id
         LEFT JOIN sessions s ON s.course_id = c.id
         LEFT JOIN attendance a ON a.session_id = s.id AND a.student_id = u.id
-        WHERE c.teacher_id = ? AND u.role = 'student'
+        WHERE c.teacher_id = ${teacherId} AND u.role = 'student'
         GROUP BY u.id, u.full_name, u.email
-        HAVING total_sessions > 0
-    `, [teacherId]);
+        HAVING COUNT(DISTINCT s.id) > 0
+    `;
 
     const atRiskStudents = [];
 
+    // Helper to handle BigInt serialization if needed
+    const safeInt = (val) => typeof val === 'bigint' ? Number(val) : val;
+
     for (const student of students) {
-        const attendancePercent = student.total_sessions > 0
-            ? Math.round((student.attended_sessions / student.total_sessions) * 100)
+        const totalSessions = safeInt(student.total_sessions);
+        const attendedSessions = safeInt(student.attended_sessions);
+
+        const attendancePercent = totalSessions > 0
+            ? Math.round((attendedSessions / totalSessions) * 100)
             : 100;
 
         // Get consecutive absences (check last N sessions)
-        const [recentAttendance] = await db.query(`
+        const recentAttendance = await prisma.$queryRaw`
             SELECT 
                 s.id as session_id,
                 s.created_at,
                 COALESCE(a.status, 'absent') as status
             FROM sessions s
             JOIN courses c ON s.course_id = c.id
-            JOIN enrollments e ON e.course_id = c.id AND e.student_id = ?
-            LEFT JOIN attendance a ON a.session_id = s.id AND a.student_id = ?
-            WHERE c.teacher_id = ?
+            JOIN enrollments e ON e.course_id = c.id AND e.student_id = ${student.student_id}
+            LEFT JOIN attendance a ON a.session_id = s.id AND a.student_id = ${student.student_id}
+            WHERE c.teacher_id = ${teacherId}
             ORDER BY s.created_at DESC
             LIMIT 10
-        `, [student.student_id, student.student_id, teacherId]);
+        `;
 
         // Count consecutive absences from most recent
         let consecutiveAbsences = 0;
@@ -116,38 +122,46 @@ router.get('/teacher/stats', verifyToken, verifyRole('teacher'), async (req, res
         const teacherId = req.user.id;
 
         // 1. Active Sessions
-        const [activeSessionsData] = await db.query(`
-            SELECT COUNT(*) as count 
-            FROM sessions s
-            JOIN courses c ON s.course_id = c.id
-            WHERE c.teacher_id = ? AND s.is_active = TRUE
-        `, [teacherId]);
+        // Prisma count is cleaner
+        const activeSessionsCount = await prisma.session.count({
+            where: {
+                course: { teacher_id: teacherId },
+                is_active: true
+            }
+        });
 
         // 2. Active Students (Total Unique Enrolled)
-        const [activeStudentsData] = await db.query(`
-            SELECT COUNT(DISTINCT e.student_id) as count
-            FROM enrollments e
-            JOIN courses c ON e.course_id = c.id
-            WHERE c.teacher_id = ?
-        `, [teacherId]);
+        // GroupBy allows distinct counting effectively
+        const activeStudentsGroup = await prisma.enrollment.groupBy({
+            by: ['student_id'],
+            where: {
+                course: { teacher_id: teacherId }
+            }
+        });
+        const activeStudentsCount = activeStudentsGroup.length;
 
         // 3. Avg Attendance
-        const [attendanceData] = await db.query(`
+        // Raw query simpler for AVG aggregation with logic
+        const attendanceData = await prisma.$queryRaw`
              SELECT 
-                (SUM(CASE WHEN status = 'present' OR status = 'late' THEN 1 ELSE 0 END) / COUNT(*)) * 100 as avg_rate
+                (SUM(CASE WHEN status = 'present' OR status = 'late' THEN 1 ELSE 0 END) * 1.0 / COUNT(*)) * 100 as avg_rate
              FROM attendance a
              JOIN sessions s ON a.session_id = s.id
              JOIN courses c ON s.course_id = c.id
-             WHERE c.teacher_id = ?
-        `, [teacherId]);
+             WHERE c.teacher_id = ${teacherId}
+        `;
+        // * 1.0 needed in postgres to force float division if count is integer? Postgres integer division truncates.
+        // Actually Postgres `SUM` returns numeric/bigint. Best to cast or multiply.
+
+        const avgRate = attendanceData[0]?.avg_rate ? Number(attendanceData[0].avg_rate) : 0;
 
         // 4. At-Risk Students Count
         const atRiskStudents = await calculateAtRiskStudents(teacherId);
 
         res.json({
-            active_sessions: activeSessionsData[0].count,
-            total_students: activeStudentsData[0].count,
-            avg_attendance: Math.round(attendanceData[0].avg_rate || 0),
+            active_sessions: activeSessionsCount,
+            total_students: activeStudentsCount,
+            avg_attendance: Math.round(avgRate),
             at_risk: atRiskStudents.length,
             at_risk_breakdown: {
                 high: atRiskStudents.filter(s => s.risk_level === 'high').length,

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../config/db');
+const prisma = require('../config/prisma');
 const bcrypt = require('bcryptjs');
 const { verifyToken, verifyRole } = require('../middleware/authMiddleware');
 
@@ -8,14 +8,17 @@ const { verifyToken, verifyRole } = require('../middleware/authMiddleware');
 router.get('/', verifyToken, verifyRole('teacher'), async (req, res) => {
     try {
         // Fetch all users with role 'student'
-        // In a real app, you might want only students enrolled in teacher's courses,
-        // but for a "Directory" we often show the pool of students.
-        const [students] = await db.query(`
-            SELECT id, full_name, email, created_at, role 
-            FROM users 
-            WHERE role = 'student' 
-            ORDER BY created_at DESC
-        `);
+        const students = await prisma.user.findMany({
+            where: { role: 'student' },
+            select: {
+                id: true,
+                full_name: true,
+                email: true,
+                created_at: true,
+                role: true
+            },
+            orderBy: { created_at: 'desc' }
+        });
         res.json(students);
     } catch (err) {
         console.error(err);
@@ -32,18 +35,25 @@ router.post('/', verifyToken, verifyRole('teacher'), async (req, res) => {
 
     try {
         // Check if exists
-        const [existing] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
-        if (existing.length > 0) return res.status(400).json({ message: 'User already exists' });
+        const existing = await prisma.user.findUnique({
+            where: { email }
+        });
+
+        if (existing) return res.status(400).json({ message: 'User already exists' });
 
         // Hash
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(defaultPassword, salt);
 
         // Insert
-        await db.query(
-            'INSERT INTO users (full_name, email, password_hash, role) VALUES (?, ?, ?, ?)',
-            [full_name, email, hash, 'student']
-        );
+        await prisma.user.create({
+            data: {
+                full_name,
+                email,
+                password_hash: hash,
+                role: 'student'
+            }
+        });
 
         res.status(201).json({ message: 'Student added successfully' });
     } catch (err) {
@@ -56,7 +66,18 @@ router.post('/', verifyToken, verifyRole('teacher'), async (req, res) => {
 router.delete('/:id', verifyToken, verifyRole('teacher'), async (req, res) => {
     try {
         // Ideally checking if the student belongs to this institution/teacher
-        await db.query('DELETE FROM users WHERE id = ? AND role = "student"', [req.params.id]);
+        // Using deleteMany to enforce role check safety
+        const result = await prisma.user.deleteMany({
+            where: {
+                id: parseInt(req.params.id),
+                role: 'student'
+            }
+        });
+
+        if (result.count === 0) {
+            return res.status(404).json({ message: 'Student not found or not authorized to delete.' });
+        }
+
         res.json({ message: 'Student deleted successfully' });
     } catch (err) {
         console.error(err);
