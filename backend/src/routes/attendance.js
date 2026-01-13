@@ -136,15 +136,14 @@ router.get('/session/:sessionId/live', verifyToken, verifyRole('teacher'), async
         });
         console.log('[LIVE] Enrollments found:', enrollments.length);
 
-        if (enrollments.length === 0) {
-            console.log('[LIVE] WARNING: No students enrolled in course', session.course_id);
-            return res.json([]); // No enrolled students
-        }
-
         // Step 3: Get all attendance records for this session
         const attendanceRecords = await prisma.attendance.findMany({
             where: { session_id: session.id },
-            select: { student_id: true, status: true, captured_at: true }
+            include: {
+                student: {
+                    select: { id: true, full_name: true, email: true }
+                }
+            }
         });
         console.log('[LIVE] Attendance records found:', attendanceRecords.length);
 
@@ -153,21 +152,42 @@ router.get('/session/:sessionId/live', verifyToken, verifyRole('teacher'), async
         attendanceRecords.forEach(record => {
             attendanceMap.set(record.student_id, {
                 status: record.status,
-                captured_at: record.captured_at
+                captured_at: record.captured_at,
+                student: record.student
             });
         });
 
-        // Step 5: Merge enrollments with attendance
-        const students = enrollments.map(enrollment => {
+        // Step 5: Merge enrollments with attendance, and add non-enrolled students who attended
+        const studentsMap = new Map();
+
+        // Add all enrolled students first
+        enrollments.forEach(enrollment => {
             const attendance = attendanceMap.get(enrollment.student_id);
-            return {
+            studentsMap.set(enrollment.student_id, {
                 id: enrollment.student_id,
                 full_name: enrollment.student.full_name,
                 email: enrollment.student.email,
                 status: attendance ? attendance.status : 'absent',
                 captured_at: attendance ? attendance.captured_at : null
-            };
+            });
         });
+
+        // Add any students who marked attendance but aren't enrolled
+        attendanceRecords.forEach(record => {
+            if (!studentsMap.has(record.student_id)) {
+                studentsMap.set(record.student_id, {
+                    id: record.student_id,
+                    full_name: record.student.full_name,
+                    email: record.student.email,
+                    status: record.status,
+                    captured_at: record.captured_at,
+                    not_enrolled: true
+                });
+            }
+        });
+
+        const students = Array.from(studentsMap.values());
+        console.log('[LIVE] Merged students list sample:', students.slice(0, 2));
 
         // Step 6: Sort - present/late first, then absent, then by name
         students.sort((a, b) => {
@@ -202,6 +222,7 @@ router.post('/mark', verifyToken, verifyRole('student'), async (req, res) => {
 
     try {
         let session;
+        console.log('[MARK] Starting mark for token/pin:', inputToken, inputPin);
 
         // Strategy 1: Find by Session Token (QR Scan)
         if (inputToken) {
@@ -267,6 +288,7 @@ router.post('/mark', verifyToken, verifyRole('student'), async (req, res) => {
             }
         });
 
+        console.log('[MARK] Attendance marked successfully for student:', req.user.id);
         res.json({ message: 'Attendance marked successfully!', session_id: session.id });
 
     } catch (err) {

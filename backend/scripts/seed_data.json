@@ -1,0 +1,417 @@
+{
+    "users": [
+        {
+            "full_name": "Dr. Subhash Chandra Bose",
+            "email": "subhash.bose@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "teacher",
+            "device_id": "TEACH_001"
+        },
+        {
+            "full_name": "Prof. Ananya Mukherjee",
+            "email": "ananya.mukherjee@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "teacher",
+            "device_id": "TEACH_002"
+        },
+        {
+            "full_name": "Dr. Debashis Chatterjee",
+            "email": "debashis.chatterjee@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "teacher",
+            "device_id": "TEACH_003"
+        },
+        {
+            "full_name": "Prof. Sangita Banerjee",
+            "email": "sangita.banerjee@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "teacher",
+            "device_id": "TEACH_004"
+        },
+        {
+            "full_name": "Dr. Arunabha Sen",
+            "email": "arunabha.sen@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "teacher",
+            "device_id": "TEACH_005"
+        },
+        {
+            "full_name": "Aritra Ghosh",
+            "email": "aritra.ghosh@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_001"
+        },
+        {
+            "full_name": "Souvik Dey",
+            "email": "souvik.dey@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_002"
+        },
+        {
+            "full_name": "Pritam Chakraborty",
+            "email": "pritam.chakraborty@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_003"
+        },
+        {
+            "full_name": "Aniket Sarkar",
+            "email": "aniket.sarkar@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_004"
+        },
+        {
+            "full_name": "Sayan Bhattacharya",
+            "email": "sayan.bhattacharya@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_005"
+        },
+        {
+            "full_name": "Dipankar Roy",
+            "email": "dipankar.roy@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_006"
+        },
+        {
+            "full_name": "Subhajit Mondal",
+            "email": "subhajit.mondal@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_007"
+        },
+        {
+            "full_name": "Rajdeep Basu",
+            "email": "rajdeep.basu@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_008"
+        },
+        {
+            "full_name": "Anirban Pal",
+            "email": "anirban.pal@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_009"
+        },
+        {
+            "full_name": "Debayan Das",
+            "email": "debayan.das@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_010"
+        },
+        {
+            "full_name": "Rishav Majumdar",
+            "email": "rishav.majumdar@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_011"
+        },
+        {
+            "full_name": "Utsav Kundu",
+            "email": "utsav.kundu@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_012"
+        },
+        {
+            "full_name": "Shreya Ganguly",
+            "email": "shreya.ganguly@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_013"
+        },
+        {
+            "full_name": "Poulami Dutta",
+            "email": "poulami.dutta@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_014"
+        },
+        {
+            "full_name": "Tanushree Mitra",
+            "email": "tanushree.mitra@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_015"
+        },
+        {
+            "full_name": "Arpita Gupta",
+            "email": "arpita.gupta@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_016"
+        },
+        {
+            "full_name": "Sneha Saha",
+            "email": "sneha.saha@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_017"
+        },
+        {
+            "full_name": "Moumita Biswas",
+            "email": "moumita.biswas@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_018"
+        },
+        {
+            "full_name": "Satabdi Chowdhury",
+            "email": "satabdi.chowdhury@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_019"
+        },
+        {
+            "full_name": "Rimjhim Sengupta",
+            "email": "rimjhim.sengupta@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_020"
+        },
+        {
+            "full_name": "Priyanka Nandi",
+            "email": "priyanka.nandi@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_021"
+        },
+        {
+            "full_name": "Adrija Lahiri",
+            "email": "adrija.lahiri@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_022"
+        },
+        {
+            "full_name": "Kaushiki Bhowmik",
+            "email": "kaushiki.bhowmik@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_023"
+        },
+        {
+            "full_name": "Swagata Kar",
+            "email": "swagata.kar@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_024"
+        },
+        {
+            "full_name": "Nilanjana Ghose",
+            "email": "nilanjana.ghose@gmail.com",
+            "password": "$2a$10$Qv2uUAsFxeYdZfaI.B2ClOVJBY6eqqfZlhzPv4afElnzfg04li.7Ay",
+            "role": "student",
+            "device_id": "STU_025"
+        }
+    ],
+    "courses": [
+        {
+            "course_name": "Data Structures and Algorithms",
+            "course_code": "CS201",
+            "description": "Fundamental data structures and algorithmic techniques",
+            "teacher_email": "subhash.bose@gmail.com"
+        },
+        {
+            "course_name": "Operating Systems",
+            "course_code": "CS301",
+            "description": "Concepts of process management, memory, and file systems",
+            "teacher_email": "subhash.bose@gmail.com"
+        },
+        {
+            "course_name": "Database Management Systems",
+            "course_code": "CS202",
+            "description": "Relational databases, SQL, and normalization",
+            "teacher_email": "ananya.mukherjee@gmail.com"
+        },
+        {
+            "course_name": "Software Engineering",
+            "course_code": "CS401",
+            "description": "Software development lifecycle and best practices",
+            "teacher_email": "ananya.mukherjee@gmail.com"
+        },
+        {
+            "course_name": "Computer Networks",
+            "course_code": "CS303",
+            "description": "Network protocols, architectures, and security",
+            "teacher_email": "debashis.chatterjee@gmail.com"
+        },
+        {
+            "course_name": "Machine Learning",
+            "course_code": "CS501",
+            "description": "Supervised and unsupervised learning algorithms",
+            "teacher_email": "debashis.chatterjee@gmail.com"
+        },
+        {
+            "course_name": "Discrete Mathematics",
+            "course_code": "MA101",
+            "description": "Logic, sets, relations, and graph theory",
+            "teacher_email": "sangita.banerjee@gmail.com"
+        },
+        {
+            "course_name": "Probability and Statistics",
+            "course_code": "MA201",
+            "description": "Statistical methods for data analysis",
+            "teacher_email": "sangita.banerjee@gmail.com"
+        },
+        {
+            "course_name": "Digital Electronics",
+            "course_code": "EC101",
+            "description": "Digital circuits and logic design",
+            "teacher_email": "arunabha.sen@gmail.com"
+        },
+        {
+            "course_name": "Microprocessors",
+            "course_code": "EC201",
+            "description": "8085/8086 architecture and programming",
+            "teacher_email": "arunabha.sen@gmail.com"
+        }
+    ],
+    "enrollments": [
+        {
+            "course_code": "CS201",
+            "student_emails": [
+                "aritra.ghosh@gmail.com",
+                "souvik.dey@gmail.com",
+                "pritam.chakraborty@gmail.com",
+                "aniket.sarkar@gmail.com",
+                "sayan.bhattacharya@gmail.com",
+                "dipankar.roy@gmail.com",
+                "subhajit.mondal@gmail.com",
+                "shreya.ganguly@gmail.com",
+                "poulami.dutta@gmail.com",
+                "tanushree.mitra@gmail.com"
+            ]
+        },
+        {
+            "course_code": "CS301",
+            "student_emails": [
+                "aritra.ghosh@gmail.com",
+                "souvik.dey@gmail.com",
+                "pritam.chakraborty@gmail.com",
+                "aniket.sarkar@gmail.com",
+                "sayan.bhattacharya@gmail.com",
+                "dipankar.roy@gmail.com",
+                "subhajit.mondal@gmail.com"
+            ]
+        },
+        {
+            "course_code": "CS202",
+            "student_emails": [
+                "shreya.ganguly@gmail.com",
+                "poulami.dutta@gmail.com",
+                "tanushree.mitra@gmail.com",
+                "arpita.gupta@gmail.com",
+                "sneha.saha@gmail.com",
+                "moumita.biswas@gmail.com",
+                "satabdi.chowdhury@gmail.com",
+                "rimjhim.sengupta@gmail.com",
+                "priyanka.nandi@gmail.com",
+                "adrija.lahiri@gmail.com"
+            ]
+        },
+        {
+            "course_code": "CS401",
+            "student_emails": [
+                "arpita.gupta@gmail.com",
+                "sneha.saha@gmail.com",
+                "moumita.biswas@gmail.com",
+                "satabdi.chowdhury@gmail.com",
+                "rimjhim.sengupta@gmail.com",
+                "priyanka.nandi@gmail.com",
+                "adrija.lahiri@gmail.com",
+                "kaushiki.bhowmik@gmail.com",
+                "swagata.kar@gmail.com",
+                "nilanjana.ghose@gmail.com"
+            ]
+        },
+        {
+            "course_code": "CS303",
+            "student_emails": [
+                "pritam.chakraborty@gmail.com",
+                "aniket.sarkar@gmail.com",
+                "sayan.bhattacharya@gmail.com",
+                "dipankar.roy@gmail.com",
+                "subhajit.mondal@gmail.com",
+                "shreya.ganguly@gmail.com",
+                "poulami.dutta@gmail.com",
+                "tanushree.mitra@gmail.com",
+                "arpita.gupta@gmail.com",
+                "sneha.saha@gmail.com",
+                "moumita.biswas@gmail.com"
+            ]
+        },
+        {
+            "course_code": "CS501",
+            "student_emails": [
+                "aritra.ghosh@gmail.com",
+                "pritam.chakraborty@gmail.com",
+                "sayan.bhattacharya@gmail.com",
+                "subhajit.mondal@gmail.com",
+                "poulami.dutta@gmail.com",
+                "arpita.gupta@gmail.com",
+                "moumita.biswas@gmail.com",
+                "rimjhim.sengupta@gmail.com"
+            ]
+        },
+        {
+            "course_code": "MA101",
+            "student_emails": [
+                "souvik.dey@gmail.com",
+                "pritam.chakraborty@gmail.com",
+                "aniket.sarkar@gmail.com",
+                "sayan.bhattacharya@gmail.com",
+                "dipankar.roy@gmail.com",
+                "subhajit.mondal@gmail.com",
+                "shreya.ganguly@gmail.com",
+                "poulami.dutta@gmail.com",
+                "tanushree.mitra@gmail.com",
+                "arpita.gupta@gmail.com",
+                "sneha.saha@gmail.com"
+            ]
+        },
+        {
+            "course_code": "MA201",
+            "student_emails": [
+                "moumita.biswas@gmail.com",
+                "satabdi.chowdhury@gmail.com",
+                "rimjhim.sengupta@gmail.com",
+                "priyanka.nandi@gmail.com",
+                "adrija.lahiri@gmail.com",
+                "kaushiki.bhowmik@gmail.com",
+                "swagata.kar@gmail.com",
+                "nilanjana.ghose@gmail.com"
+            ]
+        },
+        {
+            "course_code": "EC101",
+            "student_emails": [
+                "aritra.ghosh@gmail.com",
+                "aniket.sarkar@gmail.com",
+                "subhajit.mondal@gmail.com",
+                "tanushree.mitra@gmail.com",
+                "moumita.biswas@gmail.com",
+                "priyanka.nandi@gmail.com",
+                "swagata.kar@gmail.com"
+            ]
+        },
+        {
+            "course_code": "EC201",
+            "student_emails": [
+                "souvik.dey@gmail.com",
+                "sayan.bhattacharya@gmail.com",
+                "shreya.ganguly@gmail.com",
+                "arpita.gupta@gmail.com",
+                "satabdi.chowdhury@gmail.com",
+                "adrija.lahiri@gmail.com",
+                "nilanjana.ghose@gmail.com"
+            ]
+        }
+    ]
+}

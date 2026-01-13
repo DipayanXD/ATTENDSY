@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (activeBtn) updateNavSlider(activeBtn);
 
     // Check for active session on page load (for refresh persistence)
-    checkActiveSession();
+    // checkActiveSession(); // User requested to stop automatic session restoration
 });
 
 // Check and restore active session on page load
@@ -219,24 +219,76 @@ function showSessionOverlay(courseName, token, pin) {
     console.log('[SESSION] Token:', token);
     console.log('[SESSION] PIN:', pin);
 
-    // 1. Show UI
+    // 1. Show Overlay (for projection)
     document.getElementById('live-session-overlay').classList.remove('hidden');
     document.getElementById('live-course-name').textContent = courseName;
     document.getElementById('live-pin').textContent = pin || '----';
 
-    // 2. Initial Render
+    // 2. Populate "Live Session" Tab (for dashboard view)
+    const sessionsTab = document.getElementById('tab-sessions');
+    if (sessionsTab) {
+        sessionsTab.style.display = 'block';
+        sessionsTab.innerHTML = `
+            <div class="glass-card mb-4">
+                <div class="flex-between">
+                    <div>
+                        <h2 style="color: var(--royal-violet);">${courseName}</h2>
+                        <span class="status-pill status-present">Active Session</span>
+                    </div>
+                    <div style="text-align: right;">
+                        <h3 id="tab-live-clock">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</h3>
+                        <p class="text-xs text-muted">Started just now</p>
+                    </div>
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 1.5rem;">
+                <div class="glass-card">
+                    <h4>Access Codes</h4>
+                    <div style="text-align: center; padding: 1rem;">
+                        <div id="tab-qrcode-display" style="margin: 1rem auto; display: inline-block;"></div>
+                        <div class="mt-4">
+                            <span class="text-xs text-muted">PIN CODE</span>
+                            <h2 style="letter-spacing: 4px; color: var(--text-primary);">${pin || '----'}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card">
+                    <div class="flex-between mb-4">
+                        <h4>Real-time Attendance</h4>
+                        <div id="tab-live-stats">
+                            <span class="status-pill status-present" id="tab-count-present">0 Present</span>
+                        </div>
+                    </div>
+                    <div id="tab-live-student-list" class="live-list-scroll" style="max-height: 400px;">
+                        <div class="text-center text-muted p-4">Waiting for students...</div>
+                    </div>
+                </div>
+            </div>
+        `;
+        // Render QR in tab too
+        setTimeout(() => {
+            const tabQR = document.getElementById("tab-qrcode-display");
+            if (tabQR) {
+                new QRCode(tabQR, { text: token, width: 160, height: 160 });
+            }
+        }, 100);
+    }
+
+    // 3. Initial Render
     renderQR(token);
     startTimer();
 
-    // 3. Start Intervals
-    // Rotate Token every 30s
+    // 4. Start Intervals
     console.log('[SESSION] Starting rotation interval (30s)');
     rotationInterval = setInterval(() => rotateToken(), 30000);
     // Poll Attendance every 3s
     pollingInterval = setInterval(() => pollAttendance(), 3000);
     // Update Clock
     setInterval(() => {
-        document.getElementById('live-clock').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('live-clock').textContent = time;
+        const tabClock = document.getElementById('tab-live-clock');
+        if (tabClock) tabClock.textContent = time;
     }, 1000);
 }
 
@@ -304,6 +356,12 @@ async function rotateToken() {
         console.log('[ROTATE] Response data:', data);
         if (res.ok) {
             renderQR(data.session_token);
+            // Also update tab QR if it exists
+            const tabQR = document.getElementById("tab-qrcode-display");
+            if (tabQR) {
+                tabQR.innerHTML = '';
+                new QRCode(tabQR, { text: data.session_token, width: 160, height: 160 });
+            }
             startTimer(); // Reset visual timer
             console.log('[ROTATE] QR updated successfully');
         } else {
@@ -395,7 +453,10 @@ function startTimer() {
 
 function updateStudentList(students) {
     const list = document.getElementById('live-student-list');
-    list.innerHTML = '';
+    const tabList = document.getElementById('tab-live-student-list');
+    
+    if (list) list.innerHTML = '';
+    if (tabList) tabList.innerHTML = '';
 
     let presentCount = 0;
     let absentCount = 0;
@@ -415,27 +476,27 @@ function updateStudentList(students) {
             timeText = new Date(s.captured_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         } else {
             absentCount++;
-            statusClass = 'status-pill status-late'; // Using 'late' color (yellow) for absent/pending or maybe gray? 
-            // Better: Just text for absent
             statusClass = 'text-xs text-muted';
         }
 
-        // Custom render for status pill vs text
         const statusHTML = (s.status === 'present' || s.status === 'late')
             ? `<span class="${statusClass}">${statusText}</span>`
-            : `<span class="text-xs text-muted">Not Checked In</span>`;
+            : `<span class="text-xs text-muted">${s.not_enrolled ? 'Not Enrolled' : 'Not Checked In'}</span>`;
 
         row.innerHTML = `
-            <span style="font-weight: 500;">${s.full_name}</span>
+            <span style="font-weight: 500;">${s.full_name} ${s.not_enrolled ? '<small>(Guest)</small>' : ''}</span>
             ${statusHTML}
             <span class="text-xs text-muted">${timeText}</span>
         `;
-        list.appendChild(row);
+        
+        if (list) list.appendChild(row.cloneNode(true));
+        if (tabList) tabList.appendChild(row);
     });
 
     // Update Counts
-    document.getElementById('count-present').textContent = `${presentCount} Present`;
-    document.getElementById('count-absent').textContent = `${absentCount} Absent`;
+    if (document.getElementById('count-present')) document.getElementById('count-present').textContent = `${presentCount} Present`;
+    if (document.getElementById('count-absent')) document.getElementById('count-absent').textContent = `${absentCount} Absent`;
+    if (document.getElementById('tab-count-present')) document.getElementById('tab-count-present').textContent = `${presentCount} Present`;
 }
 
 
@@ -1065,106 +1126,6 @@ function addToQuiz() {
     alert('Quiz question added to bank (Demo Only)');
 }
 // ══════════════════════════════════════════════════════════════════════════
-// SESSION MANAGEMENT (Phase 3)
+// SESSION MANAGEMENT (Phase 3 cleanup)
 // ══════════════════════════════════════════════════════════════════════════
-// using existing global currentSessionId and rotationInterval (re-mapped to qrInterval for clarity if needed, or just use rotationInterval)
-
-// Let's reuse existing variables defined at top
-// currentSessionId is already defined.
-// rotationInterval is defined.
-
-async function startSessionPhase3(courseId = 1) { // Renamed to avoid key collision if old startSession exists
-    if (!navigator.geolocation) {
-        alert("Geolocation is required to start a session.");
-        return;
-    }
-
-    navigator.geolocation.getCurrentPosition(async (position) => {
-        const { latitude, longitude } = position.coords;
-        const authToken = localStorage.getItem('authToken');
-
-        try {
-            const response = await fetch('http://localhost:5000/api/attendance/start', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authToken}`
-                },
-                body: JSON.stringify({
-                    course_id: courseId,
-                    latitude,
-                    longitude,
-                    radius: 50 // meters
-                })
-            });
-
-            const data = await response.json();
-            if (response.ok) {
-                currentSessionId = data.session_id;
-
-                // Show Overlay
-                document.getElementById('live-session-overlay').classList.remove('hidden');
-
-                // Set PIN
-                document.getElementById('session-pin-display').innerText = data.pin;
-
-                // Initial QR
-                updateQR(data.session_token);
-
-                // Start Rotation
-                startQRRotation();
-
-                alert('Session Started! Students can now scan.');
-            } else {
-                alert('Error starting session: ' + data.error);
-            }
-        } catch (err) {
-            console.error(err);
-            alert('Failed to connect to server.');
-        }
-    }, (err) => {
-        alert("Error getting location: " + err.message);
-    });
-}
-
-function updateQR(token) {
-    const qrContainer = document.getElementById('qr-code-container');
-    qrContainer.innerHTML = ""; // Clear old
-    new QRCode(qrContainer, {
-        text: token,
-        width: 256,
-        height: 256,
-        colorDark: "#262161",
-        colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.H
-    });
-}
-
-function startQRRotation() {
-    if (qrInterval) clearInterval(qrInterval);
-    qrInterval = setInterval(async () => {
-        if (!currentSessionId) return;
-
-        const authToken = localStorage.getItem('authToken');
-        try {
-            const response = await fetch(`http://localhost:5000/api/attendance/session/${currentSessionId}/rotate`, {
-                method: 'POST',
-                headers: { 'Authorization': `Bearer ${authToken}` }
-            });
-            const data = await response.json();
-            if (response.ok) {
-                updateQR(data.session_token);
-                console.log("QR Rotated");
-            }
-        } catch (e) { console.error("QR Rotation failed", e); }
-    }, 30000); // 30 seconds
-}
-
-function endSession() {
-    if (confirm("End this class session?")) {
-        clearInterval(rotationInterval);
-        currentSessionId = null;
-        document.getElementById('live-session-overlay').classList.add('hidden');
-        // Optionally call API to close session explicitly if needed
-    }
-}
+// Duplicates removed. Using unified startSession() and rotateToken().
