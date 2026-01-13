@@ -1,0 +1,8 @@
+{
+  "projectId": "b85163a4-b872-4066-aa69-42c9f4d7e329",
+  "createdAt": 1768281000000,
+  "startupCommands": [
+    "node backend/src/server.js",
+    "npx serve frontend -p 3000"
+  ]
+}
