@@ -11,7 +11,7 @@
 - **📍 Geo-Fencing**: Validates student location against the teacher's position to prevent remote attendance fraud.
 - **⏱️ Real-Time Dashboard**: Teachers can view live attendance updates, engagement metrics, and session status.
 - **🔒 Secure Authentication**: Robust login system for both students and teachers using hashed passwords.
-- **📊 Engagement Tools**: (Planned) Features for student feedback and live interaction during sessions.
+- **📊 Engagement Tools**: Features for student feedback and live interaction during sessions.
 
 ---
 
@@ -24,10 +24,10 @@
 **Backend**
 - **Node.js**: Runtime environment for efficient, scalable server-side logic.
 - **Express.js**: RESTful API framework for handling routes and middleware.
+- **Prisma**: Next-generation ORM for Node.js and TypeScript.
 
 **Database**
-- **PostgreSQL**: Primary relational database (via Supabase) for robust data integrity.
-- **MySQL**: Legacy support available (configurable via environment variables).
+- **PostgreSQL**: Primary relational database (hosted on Supabase) for robust data integrity.
 
 ---
 
@@ -36,8 +36,8 @@
 Follow these steps to get a local copy up and running.
 
 ### Prerequisites
-- **Node.js** (v14.x or higher)
-- **PostgreSQL** or **MySQL** (Database Service)
+- **Node.js** (v18.x or higher)
+- **PostgreSQL** (Database Service)
 - **Git**
 
 ### 1. Clone the Repository
@@ -46,62 +46,80 @@ git clone https://github.com/DipayanXD/ATTENDSY.git
 cd ATTENDSY
 ```
 
-### 2. Backend Setup
-Navigate to the backend directory and install dependencies.
+### 2. Install Dependencies
+Install dependencies from the root directory.
 ```bash
-cd backend
 npm install
 ```
 
 ### 3. Database Configuration
-1.  Create a PostgreSQL database (e.g., using Supabase or local pgAdmin).
-2.  Run the schema script located in `database/schema_pg.sql` (or `schema.sql` for MySQL) to create the necessary tables.
-3.  Create a `.env` file in the `backend/` directory with the following variables:
+1.  **Create a PostgreSQL database** (e.g., using Supabase or a local instance).
+2.  **Environment Variables**: Create a `.env` file in the root directory (or ensure `backend/.env` is linked) with the following variables:
 
     ```env
+    DATABASE_URL="postgresql://user:password@host:port/database?schema=public"
+    JWT_SECRET="your_super_secret_key"
     PORT=5000
-    DB_HOST=your_db_host
-    DB_USER=your_db_user
-    DB_PASS=your_db_password
-    DB_NAME=your_db_name
-    JWT_SECRET=your_jwt_secret_key
-    CLIENT_URL=http://localhost:5500
     ```
 
-### 4. Seed Data (Optional)
-Populate the database with test users and courses.
-```bash
-npm run seed
-```
-*Creates default users: `teacher@example.com` and `student@example.com` (Password: `password123`)*
+3.  **Run Schema Migration**:
+    Initialize the database tables using the provided SQL script or Prisma.
+    *Option A (SQL Script)*: Run the contents of `database/schema_pg.sql` in your SQL query editor.
+    *Option B (Prisma)*:
+    ```bash
+    npx prisma migrate dev
+    ```
 
-### 5. Start the Server
+4.  **Seed Data**:
+    Populate the database with test users and courses using the provided SQL data.
+    - Run the contents of `database/data.sql` in your SQL query editor.
+
+### 4. Start the Server
+Start the backend server from the root directory.
 ```bash
 npm start
 ```
 The server will run on `http://localhost:5000`.
 
-### 6. Frontend Setup
+### 5. Frontend Setup
 1.  Navigate to the `frontend/` directory.
-2.  Open `index.html` (or `login.html`) directly in your browser.
-    - *Note: For Geolocation features to work correctly, use a local development server (e.g., VS Code "Live Server" extension) to serve the frontend over `http://localhost:5500` or `127.0.0.1`.*
+2.  **Important**: Open `index.html` (or `login.html`) using a **Live Server** (e.g., VS Code Live Server extension).
+    - *Why?* Browser Geolocation APIs requiring for attendance features typically require a secure context (HTTPS) or `localhost` serving. Opening the file directly (`file://`) may block location access.
+    - URL should look like: `http://127.0.0.1:5500/frontend/index.html`
+
+---
+
+## 👥 Sample Credentials (Login)
+
+Use these credentials to test the application flows. All passwords are set to `password123`.
+
+### 👨‍🏫 Teacher Account
+- **Email**: `subhash.bose@gmail.com`
+- **Password**: `password123`
+- **Role**: Creates sessions, generates QR codes, monitors attendance.
+
+### 👩‍🎓 Student Account
+- **Email**: `aritra.ghosh@gmail.com`
+- **Password**: `password123`
+- **Role**: Joins sessions, scans QR codes, marks attendance (requires location permission).
 
 ---
 
 ## 📖 Usage Guide
 
-### 👨‍🏫 Teacher Flow
-1.  **Log In**: Use teacher credentials.
-2.  **Dashboard**: View active courses and past sessions.
-3.  **Start Session**: Select a course and click "Start Live Session".
-4.  **Share Code**: A dynamic QR code (and PIN) will appear. Project this for students to see.
-5.  **Monitor**: Watch the list of present students update in real-time.
+### Teacher Flow
+1.  **Log In** with the teacher credentials above.
+2.  **Dashboard**: You will see your active courses.
+3.  **Start Session**: Select a course (e.g., "Data Structures") and click "Start Live Session".
+4.  **Display QR**: A dynamic QR code will appear on screen. Project this for students.
+5.  **Monitor**: Watch as student names appear in the "Live Attendance" list in real-time.
 
-### 👩‍🎓 Student Flow
-1.  **Log In**: Use student credentials.
-2.  **Join Session**: Enter the PIN or scan the QR code displayed by the teacher.
-3.  **Location Check**: Grant location permissions when prompted. You must be within range (~50m) of the teacher.
-4.  **Confirm**: Submit attendance. A success message confirms your presence.
+### Student Flow
+1.  **Log In** with the student credentials above.
+2.  **Dashboard**: Click "Join Session" or open the scanner.
+3.  **Scan/PIN**: Scan the teacher's QR code or manually enter the session PIN.
+4.  **Location**: Allow location access when prompted. You must be geographically close to the teacher's device (simulated).
+5.  **Success**: You will receive a confirmation message upon successful attendance marking.
 
 ---
 
