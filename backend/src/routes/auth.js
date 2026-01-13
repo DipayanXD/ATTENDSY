@@ -50,7 +50,18 @@ router.post('/login', async (req, res) => {
 
         // Verify Password
         const isMatch = await bcrypt.compare(password, user.password_hash);
-        if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
+        if (!isMatch) {
+            console.log('Password mismatch for:', email);
+            console.log('Stored hash prefix:', user.password_hash?.substring(0, 20));
+            return res.status(400).json({
+                message: 'Invalid credentials',
+                debug: {
+                    email,
+                    hashExists: !!user.password_hash,
+                    hashLength: user.password_hash?.length
+                }
+            });
+        }
 
         // Device Check (Optional strict mode)
         // If user has a registered device_id, warn or block if different? 
