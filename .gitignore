@@ -45,3 +45,4 @@ Desktop.ini
 
 /generated/prisma
 
+.env*.local
